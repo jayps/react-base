@@ -46,5 +46,17 @@ a {
 }
 
 .alert {
-  @apply bg-red-600 text-white px-2 py-2;
+  &.error {
+    @apply bg-red-600 text-white px-2 py-2;
+    a {
+      @apply text-white;
+    }
+  }
+
+  &.success {
+    @apply bg-emerald-800 text-white px-2 py-2;
+    a {
+      @apply text-white;
+    }
+  }
 }

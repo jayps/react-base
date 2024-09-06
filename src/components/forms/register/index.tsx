@@ -16,6 +16,7 @@ type RegisterFormInputs = {
 const RegisterForm: React.FC = () => {
     const [isRegistering, setIsRegistering] = React.useState(false);
     const [errorMessage, setErrorMessage] = React.useState<string | undefined>();
+    const [success, setSuccess] = React.useState(false);
     const {
         register,
         handleSubmit,
@@ -28,6 +29,7 @@ const RegisterForm: React.FC = () => {
     const onSubmit: SubmitHandler<RegisterFormInputs> = async (data) => {
         setIsRegistering(true);
         setErrorMessage(undefined);
+        setSuccess(false);
         try {
             const httpResponse = await fetch(`${process.env.REACT_APP_API_BASE_URL}/auth/register/`, {
                 method: 'POST',
@@ -37,13 +39,14 @@ const RegisterForm: React.FC = () => {
                 }
             });
             const response = await httpResponse.json();
-            console.log(response);
             if (httpResponse.status !== 201) {
                 if (response.data) {
                     setErrorMessage(response.data);
                 } else {
                     setErrorMessage('An error occurred during registration. Please try again.')
                 }
+            } else {
+                setSuccess(true);
             }
         } catch (err) {
             console.error(err);
@@ -51,6 +54,13 @@ const RegisterForm: React.FC = () => {
         }
 
         setIsRegistering(false);
+    }
+
+    if (success) {
+        return (
+            <Alert severity="success">You have registered an account. You can now <Link to="/login">log
+                in.</Link></Alert>
+        )
     }
 
     return (

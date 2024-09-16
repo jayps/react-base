@@ -65,7 +65,7 @@ const RegisterForm: React.FC = () => {
 
     return (
         <>
-            <div className="login-form bg-white p-5 min-w-96 min-h-96 flex flex-col justify-center items-center">
+            <div className="login-form shadow-xl rounded bg-white p-5 min-w-96 min-h-96 flex flex-col justify-center items-center">
                 <div className="min-w-96">
                     <h2>Register</h2>
                 </div>

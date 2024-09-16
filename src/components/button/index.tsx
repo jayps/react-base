@@ -25,6 +25,11 @@ const Button: React.FC<ButtonProps> = ({
     return (
         <button className={computedClassName} onClick={onClick} id={id} type={type || 'button'}
                 disabled={disabled || busy || false}>
+            {
+                busy && (
+                    <div className="loader"></div>
+                )
+            }
             <span>{text}</span>
         </button>
     )

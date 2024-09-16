@@ -20,7 +20,7 @@ const LoginForm: React.FC = () => {
 
     return (
         <>
-            <div className="login-form bg-white p-5 min-w-96 min-h-96 flex flex-col justify-center items-center">
+            <div className="login-form rounded bg-white p-5 min-w-96 min-h-96 flex flex-col justify-center items-center">
                 <div className="min-w-96">
                     <h2>Login</h2>
                 </div>

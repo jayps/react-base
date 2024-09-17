@@ -1,24 +1,17 @@
 import React from 'react';
-import PublicPage from '../../components/containers/public-page';
-import {Link} from 'react-router-dom';
+import PrivatePage from '../../components/containers/private-page';
+import {useAuth} from '../../context/auth/auth-context';
 
 const DashboardPage: React.FC = () => {
+    const authState = useAuth();
+
     return (
-        <PublicPage>
+        <PrivatePage>
             <div className="grid grid-cols-2">
-                <div className="flex flex-col justify-center items-center min-h-screen">
-                    <Link to="/login">Login</Link>
-                </div>
-                <div className="flex flex-col justify-center items-center min-h-screen">
-                    <p>
-                        Right of login page.
-                    </p>
-                    <p>
-                        Put a background here, or some text.
-                    </p>
-                </div>
+                Dashboard<br />
+                Welcome, {authState.accessToken}
             </div>
-        </PublicPage>
+        </PrivatePage>
     )
 }
 

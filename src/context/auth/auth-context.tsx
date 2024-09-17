@@ -7,9 +7,14 @@ export interface AuthState {
     user?: User;
 }
 
+const tokenData = JSON.parse(localStorage.getItem('token') || '{}');
+const initialAccessToken = tokenData.access;
+const initialRefreshToken = tokenData.refresh;
+console.log('tokenData', tokenData)
+
 const initialState: AuthState = {
-    accessToken: undefined,
-    refreshToken: undefined,
+    accessToken: initialAccessToken || undefined,
+    refreshToken: initialRefreshToken || undefined,
     user: undefined,
 }
 

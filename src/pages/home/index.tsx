@@ -1,6 +1,5 @@
 import React from 'react';
 import PublicPage from '../../components/containers/public-page';
-import LoginForm from '../../components/forms/login';
 import {Link} from 'react-router-dom';
 
 const HomePage: React.FC = () => {

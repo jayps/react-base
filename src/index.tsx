@@ -8,6 +8,10 @@ import HomePage from './pages/home';
 import LoginPage from './pages/login';
 import NotFoundPage from './pages/not-found';
 import RegisterPage from './pages/register';
+import DashboardPage from './pages/dashboard';
+import {AuthProvider} from './context/auth/auth-context';
+import AuthenticatedRoute from './components/authenticated-route';
+import UnauthenticatedRoute from './components/unauthenticated-route';
 
 const router = createBrowserRouter([
     {
@@ -17,11 +21,15 @@ const router = createBrowserRouter([
     },
     {
         path: "/login",
-        element: <LoginPage/>,
+        element: <UnauthenticatedRoute comp={<LoginPage />} />,
     },
     {
         path: "/register",
-        element: <RegisterPage/>,
+        element: <UnauthenticatedRoute comp={<RegisterPage />} />,
+    },
+    {
+        path: "/dashboard",
+        element: <AuthenticatedRoute comp={<DashboardPage />} />,
     },
 ]);
 
@@ -30,7 +38,9 @@ const root = ReactDOM.createRoot(
 );
 root.render(
     <React.StrictMode>
-        <RouterProvider router={router}/>
+        <AuthProvider>
+            <RouterProvider router={router}/>
+        </AuthProvider>
     </React.StrictMode>
 );
 

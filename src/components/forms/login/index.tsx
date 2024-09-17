@@ -24,6 +24,10 @@ const LoginForm: React.FC = () => {
     const authState = useAuth();
     const authDispatch = useAuthDispatch();
 
+    React.useEffect(() => {
+        console.log('LoginForm', authState);
+    }, [authState]);
+
     const onSubmit: SubmitHandler<LoginFormInputs> = async (data) => {
         setIsLoggingIn(true);
         setErrorMessage(undefined);
@@ -51,7 +55,8 @@ const LoginForm: React.FC = () => {
                 authDispatch({
                     type: AUTH_ACTION_TYPE.SET_TOKEN,
                     payload: response.data
-                })
+                });
+                localStorage.setItem('token', JSON.stringify(response.data));
             }
         } catch (err) {
             setErrorMessage('An error occurred. Please try again.')

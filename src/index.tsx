@@ -8,7 +8,7 @@ import HomePage from './pages/home';
 import LoginPage from './pages/login';
 import NotFoundPage from './pages/not-found';
 import RegisterPage from './pages/register';
-console.log(process.env.REACT_APP_API_BASE_URL);
+
 const router = createBrowserRouter([
     {
         path: "/",

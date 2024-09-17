@@ -3,6 +3,7 @@ import Button from '../../button';
 import {SubmitHandler, useForm} from 'react-hook-form';
 import {Link} from 'react-router-dom';
 import Alert from '../../alert';
+import {AUTH_ACTION_TYPE, AuthProvider, useAuth, useAuthDispatch} from '../../../context/auth/auth-context';
 
 type LoginFormInputs = {
     email: string;
@@ -19,6 +20,9 @@ const LoginForm: React.FC = () => {
         watch,
         formState: {errors, isValid},
     } = useForm<LoginFormInputs>();
+
+    const authState = useAuth();
+    const authDispatch = useAuthDispatch();
 
     const onSubmit: SubmitHandler<LoginFormInputs> = async (data) => {
         setIsLoggingIn(true);
@@ -43,11 +47,13 @@ const LoginForm: React.FC = () => {
                 }
             } else {
                 setSuccess(true);
-                console.log(response);
-                alert('Logged in!')
+                // @ts-ignore
+                authDispatch({
+                    type: AUTH_ACTION_TYPE.SET_TOKEN,
+                    payload: response.data
+                })
             }
         } catch (err) {
-            console.error(err);
             setErrorMessage('An error occurred. Please try again.')
         }
 

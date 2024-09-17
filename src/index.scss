@@ -64,3 +64,11 @@ a {
     @apply text-white;
   }
 }
+
+.sidebar {
+  @apply w-1/4;
+}
+
+.card {
+  @apply bg-white rounded p-3 shadow-xl;
+}

@@ -7,9 +7,11 @@ const DashboardPage: React.FC = () => {
 
     return (
         <PrivatePage>
-            <div className="grid grid-cols-2">
-                Dashboard<br />
-                Welcome, {authState.accessToken}
+            <div className="flex flex-col">
+                <h2>Dashboard</h2>
+                <div>
+                    Welcome, {authState.accessToken}
+                </div>
             </div>
         </PrivatePage>
     )

@@ -10,7 +10,7 @@ const DashboardPage: React.FC = () => {
             <div className="flex flex-col">
                 <h2>Dashboard</h2>
                 <div>
-                    Welcome, {authState.accessToken}
+                    Welcome, {authState.user?.firstName}
                 </div>
             </div>
         </PrivatePage>

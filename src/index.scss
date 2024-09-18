@@ -74,9 +74,26 @@ a {
 }
 
 .menu-item-link {
-  @apply my-5 block;
+  @apply my-2 block hover:cursor-pointer;
 
   a {
-    @apply decoration-0 no-underline;
+    @apply block decoration-0 no-underline;
+  }
+
+  ul {
+    @apply ms-4;
+  }
+
+  span {
+    @apply block border border-gray-300 px-2 py-2 rounded hover:bg-blue-100 transition-all;
+  }
+}
+
+.collapsed {
+  @apply max-h-0 opacity-0 overflow-y-hidden transition-all duration-500 ease-in-out;
+
+  &.expanded {
+    max-height: 1000px;
+    @apply opacity-100;
   }
 }

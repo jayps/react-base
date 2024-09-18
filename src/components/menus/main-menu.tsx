@@ -25,12 +25,12 @@ const MainMenu: React.FC = () => {
     return (
         <ul>
             <MenuLink to="/dashboard" label="Dashboard" />
-            <MenuLink label="Admin" onClick={toggleAdmin}>
+            <PermittedMenuLink label="Admin" onClick={toggleAdmin} requiredPermission="view_group">
                 <ul className={`collapsed ${adminExpanded ? 'expanded': ''}`}>
                     <PermittedMenuLink requiredPermission="view_appuser" to="/dashboard" label="Users" />
-                    <PermittedMenuLink requiredPermission="view_group" to="/dashboard" label="Groups" />
+                    <PermittedMenuLink requiredPermission="view_group" to="/groups" label="Groups" />
                 </ul>
-            </MenuLink>
+            </PermittedMenuLink>
             <MenuLink label="Logout" onClick={logout} />
         </ul>
     )

@@ -4,16 +4,21 @@ import {Navigate} from 'react-router-dom';
 
 export interface AuthenticatedRouteProps {
     comp: any;
+    requiredPermission?: string;
 }
 
-const AuthenticatedRoute: React.FC<AuthenticatedRouteProps> = ({comp}) => {
+const AuthenticatedRoute: React.FC<AuthenticatedRouteProps> = ({comp, requiredPermission}) => {
     const authState = useAuth();
 
-    React.useEffect(() => {
-        console.log('AuthenticatedRoute', authState.accessToken)
-    }, [authState.accessToken]);
-
     if (authState.accessToken) {
+        if (requiredPermission) {
+            if (authState.user?.hasPermission(requiredPermission)) {
+                return comp;
+            } else {
+                return <Navigate to="/login" replace />;
+            }
+        }
+
         return comp;
     }
 

@@ -56,6 +56,7 @@ const AuthDispatchContext = React.createContext<React.Dispatch<AuthAction> | nul
 export enum AUTH_ACTION_TYPE {
     SET_TOKEN = 'SET_TOKEN',
     SET_USER = 'SET_USER',
+    LOGOUT = 'LOGOUT',
 }
 
 const authReducer = (state: AuthState, action: AuthAction): AuthState => {
@@ -94,6 +95,13 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
             return {
                 ...state,
                 user: action.payload.user,
+            };
+        case AUTH_ACTION_TYPE.LOGOUT:
+            return {
+                ...state,
+                user: undefined,
+                accessToken: undefined,
+                refreshToken: undefined,
             };
         default:
             return state;

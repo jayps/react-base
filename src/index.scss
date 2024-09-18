@@ -72,3 +72,11 @@ a {
 .card {
   @apply bg-white rounded p-3 shadow-xl;
 }
+
+.menu-item-link {
+  @apply my-5 block;
+
+  a {
+    @apply decoration-0 no-underline;
+  }
+}

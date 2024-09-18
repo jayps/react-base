@@ -29,7 +29,6 @@ export class User {
     }
 
     public hasPermission(permission: string): boolean {
-        console.log('Checking permissions for ', permission, this.groups);
         const found = this.groups.find((g) => {
             return g.permissions.find((p) => p.codename === permission) !== undefined
         });

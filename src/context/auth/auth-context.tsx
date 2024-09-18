@@ -3,8 +3,8 @@ import {jwtDecode} from "jwt-decode";
 import {User} from '../../models/user';
 
 export interface AuthState {
-    accessToken?: string;
-    refreshToken?: string;
+    accessToken: string;
+    refreshToken: string;
     user?: User;
 }
 
@@ -39,8 +39,8 @@ if (initialAccessToken) {
 }
 
 const initialState: AuthState = {
-    accessToken: initialAccessToken || undefined,
-    refreshToken: initialRefreshToken || undefined,
+    accessToken: initialAccessToken || '',
+    refreshToken: initialRefreshToken || '',
     user: initialUser,
 }
 
@@ -100,8 +100,8 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
             return {
                 ...state,
                 user: undefined,
-                accessToken: undefined,
-                refreshToken: undefined,
+                accessToken: '',
+                refreshToken: '',
             };
         default:
             return state;

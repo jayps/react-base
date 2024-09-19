@@ -4,6 +4,7 @@ import {AUTH_ACTION_TYPE, useAuth} from '../../context/auth/auth-context';
 import {Group} from '../../models/group';
 import {PaginatedData} from '../../models/response';
 import {Link} from 'react-router-dom';
+import Button from '../../components/button';
 
 const GroupsPage: React.FC = () => {
     const authState = useAuth();
@@ -15,8 +16,6 @@ const GroupsPage: React.FC = () => {
         previous: '',
         results: []
     });
-
-
 
     React.useEffect(() => {
         setLoading(true);
@@ -60,7 +59,7 @@ const GroupsPage: React.FC = () => {
                                 Permissions
                             </th>
                             <th>
-                                Actions
+                                <Button text="+ New" color="primary" link="/groups/new" />
                             </th>
                         </tr>
                     </thead>

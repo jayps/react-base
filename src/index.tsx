@@ -13,6 +13,7 @@ import {AuthProvider} from './context/auth/auth-context';
 import AuthenticatedRoute from './components/authenticated-route';
 import UnauthenticatedRoute from './components/unauthenticated-route';
 import GroupsPage from './pages/groups';
+import CreateGroupPage from './pages/groups/create';
 
 const router = createBrowserRouter([
     {
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
     {
         path: "/groups",
         element: <AuthenticatedRoute comp={<GroupsPage />} requiredPermission="view_group" />,
+    },
+    {
+        path: "/groups/new",
+        element: <AuthenticatedRoute comp={<CreateGroupPage />} requiredPermission="view_group" />,
     },
 ]);
 

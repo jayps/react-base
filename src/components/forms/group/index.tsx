@@ -3,8 +3,8 @@ import {Group} from '../../../models/group';
 import {SubmitHandler, useForm} from 'react-hook-form';
 import Alert from '../../alert';
 import Button from '../../button';
-import {Link} from 'react-router-dom';
-import {useAuth} from '../../../context/auth/auth-context';
+import {Link, useNavigate} from 'react-router-dom';
+import {AUTH_ACTION_TYPE, useAuth} from '../../../context/auth/auth-context';
 import {Permission} from '../../../models/permission';
 import {User} from '../../../models/user';
 
@@ -14,6 +14,8 @@ export interface GroupFormProps {
 
 interface GroupInputs {
     name: string;
+    users: string[];
+    permissions: number[];
 }
 
 const GroupForm: React.FC<GroupFormProps> = ({initialGroup}) => {
@@ -24,6 +26,7 @@ const GroupForm: React.FC<GroupFormProps> = ({initialGroup}) => {
     const [permissions, setPermissions] = React.useState<Permission[]>([]);
     const [users, setUsers] = React.useState<User[]>([]);
     const authState = useAuth();
+    const navigate = useNavigate();
 
     const loadPermissions = async () => {
         try {
@@ -95,6 +98,35 @@ const GroupForm: React.FC<GroupFormProps> = ({initialGroup}) => {
 
     const onSubmit: SubmitHandler<GroupInputs> = async (data) => {
         console.log(data);
+        setSaving(true);
+
+        try {
+            const httpResponse = await fetch(`${process.env.REACT_APP_API_BASE_URL}/users/groups/`, {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${authState.accessToken}`,
+                }
+            });
+            const response = await httpResponse.json();
+            if (httpResponse.status !== 201) {
+                if (httpResponse.status === 403) {
+                    setError('You do not have permission to manage groups.')
+                } else if (response.data.detail) {
+                    setError(response.data.detail);
+                } else {
+                    setError('An error occurred. Please try again.')
+                }
+            } else {
+                navigate('/groups');
+            }
+        } catch (err) {
+            setError('An error occurred. Please try again.')
+        }
+
+        setSaving(false);
+
     }
 
     return (
@@ -111,25 +143,29 @@ const GroupForm: React.FC<GroupFormProps> = ({initialGroup}) => {
                     <div>
                         <h4>Permissions</h4>
                         <div className="flex flex-col h-48 overflow-y-scroll border p-2 mb-1">
-                            {
-                                permissions.map((permission: Permission) => (
-                                    <div key={`permission-${permission.id}`}>
-                                        <input type="checkbox" /> <label>{permission.name}</label>
-                                    </div>
-                                ))
-                            }
+                            <select multiple {...register("permissions", {required: true})} className="h-full">
+                                {
+                                    permissions.map((permission: Permission) => (
+                                        <option key={`permission-${permission.id}`} value={permission.id}>
+                                            {permission.name}
+                                        </option>
+                                    ))
+                                }
+                            </select>
                         </div>
                     </div>
                     <div>
                         <h4>Users</h4>
                         <div className="flex flex-col h-48 overflow-y-scroll border p-2 mb-1">
-                            {
-                                users.map((user: User) => (
-                                    <div key={`user-${user.id}`}>
-                                        <input type="checkbox"/> <label>{user.firstName} {user.lastName} ({user.email})</label>
-                                    </div>
-                                ))
-                            }
+                            <select multiple {...register("users", {required: true})} className="h-full">
+                                {
+                                    users.map((user: User) => (
+                                        <option key={`user-${user.id}`} value={user.id}>
+                                            {user.firstName} {user.lastName} ({user.email})
+                                        </option>
+                                    ))
+                                }
+                            </select>
                         </div>
                     </div>
                 </div>

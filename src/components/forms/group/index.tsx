@@ -1,21 +1,21 @@
 import React from 'react';
 import {Group} from '../../../models/group';
-import {SubmitHandler, useForm} from 'react-hook-form';
+import {Controller, SubmitHandler, useForm} from 'react-hook-form';
 import Alert from '../../alert';
 import Button from '../../button';
-import {Link, useNavigate} from 'react-router-dom';
+import {Link, useNavigate, useParams} from 'react-router-dom';
 import {AUTH_ACTION_TYPE, useAuth} from '../../../context/auth/auth-context';
 import {Permission} from '../../../models/permission';
 import {User} from '../../../models/user';
 
-export interface GroupFormProps {
-    initialGroup?: Group;
+export interface GroupInputs {
+    name: string;
+    userSet: string[];
+    permissions: string[];
 }
 
-interface GroupInputs {
-    name: string;
-    users: string[];
-    permissions: number[];
+export interface GroupFormProps {
+    initialGroup?: GroupInputs;
 }
 
 const GroupForm: React.FC<GroupFormProps> = ({initialGroup}) => {
@@ -27,6 +27,18 @@ const GroupForm: React.FC<GroupFormProps> = ({initialGroup}) => {
     const [users, setUsers] = React.useState<User[]>([]);
     const authState = useAuth();
     const navigate = useNavigate();
+    const {id} = useParams();
+
+    const {
+        register,
+        handleSubmit,
+        watch,
+        formState: {errors, isValid},
+        reset,
+        control
+    } = useForm<GroupInputs>({
+        defaultValues: initialGroup
+    });
 
     const loadPermissions = async () => {
         try {
@@ -77,6 +89,7 @@ const GroupForm: React.FC<GroupFormProps> = ({initialGroup}) => {
     }
 
     React.useEffect(() => {
+        console.log('initialGroup', initialGroup);
         setLoading(true);
         (async () => {
             await loadPermissions();
@@ -85,24 +98,15 @@ const GroupForm: React.FC<GroupFormProps> = ({initialGroup}) => {
         setLoading(false);
     }, []);
 
-    React.useEffect(() => {
-        console.log(users);
-    }, [users]);
-
-    const {
-        register,
-        handleSubmit,
-        watch,
-        formState: {errors, isValid},
-    } = useForm<GroupInputs>();
-
     const onSubmit: SubmitHandler<GroupInputs> = async (data) => {
-        console.log(data);
         setSaving(true);
 
         try {
-            const httpResponse = await fetch(`${process.env.REACT_APP_API_BASE_URL}/users/groups/`, {
-                method: 'POST',
+            const url: string = id ? `${process.env.REACT_APP_API_BASE_URL}/users/groups/${id}/` : `${process.env.REACT_APP_API_BASE_URL}/users/groups/`
+            const method = id ? 'PUT' : 'POST';
+
+            const httpResponse = await fetch(url, {
+                method,
                 body: JSON.stringify(data),
                 headers: {
                     'Content-Type': 'application/json',
@@ -110,7 +114,7 @@ const GroupForm: React.FC<GroupFormProps> = ({initialGroup}) => {
                 }
             });
             const response = await httpResponse.json();
-            if (httpResponse.status !== 201) {
+            if (httpResponse.status !== 200 && httpResponse.status !== 201) {
                 if (httpResponse.status === 403) {
                     setError('You do not have permission to manage groups.')
                 } else if (response.data.detail) {
@@ -126,7 +130,6 @@ const GroupForm: React.FC<GroupFormProps> = ({initialGroup}) => {
         }
 
         setSaving(false);
-
     }
 
     return (
@@ -134,38 +137,75 @@ const GroupForm: React.FC<GroupFormProps> = ({initialGroup}) => {
             <div>
                 <div className="form-group">
                     <label htmlFor="name">Name</label>
-                    <input type="text" {...register("name", {required: true})} />
-                    {
-                        errors.name && <span>This field is required</span>
-                    }
+                    <Controller
+                        name="name"
+                        control={control}
+                        defaultValue={initialGroup?.name}
+                        render={({ field: { onChange, onBlur, value } }) => (
+                            <input
+                                type="text"
+                                placeholder="First name"
+                                onBlur={onBlur}
+                                onChange={onChange}
+                                value={value}
+                            />
+                        )}
+                        rules={{required: true}}
+                    />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                     <div>
                         <h4>Permissions</h4>
                         <div className="flex flex-col h-48 overflow-y-scroll border p-2 mb-1">
-                            <select multiple {...register("permissions", {required: true})} className="h-full">
-                                {
-                                    permissions.map((permission: Permission) => (
-                                        <option key={`permission-${permission.id}`} value={permission.id}>
-                                            {permission.name}
-                                        </option>
-                                    ))
-                                }
-                            </select>
+                            <Controller
+                                name="permissions"
+                                control={control}
+                                defaultValue={initialGroup?.permissions}
+                                render={({ field: { onChange, onBlur, value, ref } }) => (
+                                    <select
+                                        value={value}
+                                        onChange={onChange}
+                                        multiple={true}
+                                        className="h-full"
+                                    >
+                                        {
+                                            permissions.map((permission: Permission) => (
+                                                <option key={`permission-${permission.id}`} value={permission.id}>
+                                                    {permission.name}
+                                                </option>
+                                            ))
+                                        }
+                                    </select>
+                                )}
+                                rules={{required: true}}
+                            />
                         </div>
                     </div>
                     <div>
                         <h4>Users</h4>
                         <div className="flex flex-col h-48 overflow-y-scroll border p-2 mb-1">
-                            <select multiple {...register("users", {required: true})} className="h-full">
-                                {
-                                    users.map((user: User) => (
-                                        <option key={`user-${user.id}`} value={user.id}>
-                                            {user.firstName} {user.lastName} ({user.email})
-                                        </option>
-                                    ))
-                                }
-                            </select>
+                            <Controller
+                                name="userSet"
+                                control={control}
+                                defaultValue={initialGroup?.userSet}
+                                render={({ field: { onChange, onBlur, value, ref } }) => (
+                                    <select
+                                        value={value}
+                                        onChange={onChange}
+                                        multiple={true}
+                                        className="h-full"
+                                    >
+                                        {
+                                            users.map((user: User) => (
+                                                <option key={`user-${user.id}`} value={user.id}>
+                                                    {user.firstName} {user.lastName} ({user.email})
+                                                </option>
+                                            ))
+                                        }
+                                    </select>
+                                )}
+                                rules={{required: true}}
+                            />
                         </div>
                     </div>
                 </div>

@@ -9,10 +9,6 @@ export interface UnauthenticatedRouteProps {
 const UnauthenticatedRoute: React.FC<UnauthenticatedRouteProps> = ({comp}) => {
     const authState = useAuth();
 
-    React.useEffect(() => {
-        console.log('UnauthenticatedRoute', authState)
-    }, [authState]);
-
     if (!authState.accessToken) {
         return comp;
     }

@@ -24,10 +24,6 @@ const LoginForm: React.FC = () => {
     const authState = useAuth();
     const authDispatch = useAuthDispatch();
 
-    React.useEffect(() => {
-        console.log('LoginForm', authState);
-    }, [authState]);
-
     const onSubmit: SubmitHandler<LoginFormInputs> = async (data) => {
         setIsLoggingIn(true);
         setErrorMessage(undefined);

@@ -29,7 +29,7 @@ form {
 .form-group {
   @apply block mb-5;
 
-  input {
+  input, select {
     @apply border border-gray-300 block w-full py-1 px-2 rounded;
   }
 }

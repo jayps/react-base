@@ -108,7 +108,7 @@ const GroupForm: React.FC<GroupFormProps> = ({initialGroup}) => {
 
             const httpResponse = await fetch(url, {
                 method,
-                body: JSON.stringify(data),
+                body: JSON.stringify({...data, permissions: selectedPermissions.map((p: Permission) => p.id), userSet: selectedUsers.map((u: User) => u.id)}),
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${authState.accessToken}`,

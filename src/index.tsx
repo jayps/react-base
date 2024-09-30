@@ -16,6 +16,8 @@ import GroupsPage from './pages/groups';
 import CreateGroupPage from './pages/groups/manage';
 import GroupDetailPage from './pages/groups/manage';
 import ManageGroupPage from './pages/groups/manage';
+import UsersPage from './pages/users';
+import ManageUserPage from './pages/users/manage';
 
 const router = createBrowserRouter([
     {
@@ -46,6 +48,18 @@ const router = createBrowserRouter([
     {
         path: "/groups/new",
         element: <AuthenticatedRoute comp={<ManageGroupPage />} requiredPermission="view_group" />,
+    },
+    {
+        path: "/users",
+        element: <AuthenticatedRoute comp={<UsersPage />} requiredPermission="view_appuser" />,
+    },
+    {
+        path: "/users/:id",
+        element: <AuthenticatedRoute comp={<ManageUserPage />} requiredPermission="view_appuser" />,
+    },
+    {
+        path: "/users/new",
+        element: <AuthenticatedRoute comp={<ManageUserPage />} requiredPermission="view_appuser" />,
     },
 ]);
 

@@ -27,7 +27,7 @@ const MainMenu: React.FC = () => {
             <MenuLink to="/dashboard" label="Dashboard" />
             <PermittedMenuLink label="Admin" onClick={toggleAdmin} requiredPermission="view_group">
                 <ul className={`collapsed ${adminExpanded ? 'expanded': ''}`}>
-                    <PermittedMenuLink requiredPermission="view_appuser" to="/dashboard" label="Users" />
+                    <PermittedMenuLink requiredPermission="view_appuser" to="/users" label="Users" />
                     <PermittedMenuLink requiredPermission="view_group" to="/groups" label="Groups" />
                 </ul>
             </PermittedMenuLink>

@@ -4,6 +4,7 @@ import {SubmitHandler, useForm} from 'react-hook-form';
 import {Link} from 'react-router-dom';
 import Alert from '../../alert';
 import {AUTH_ACTION_TYPE, AuthProvider, useAuth, useAuthDispatch} from '../../../context/auth/auth-context';
+import logo from '../../../media/logo.svg';
 
 type LoginFormInputs = {
     email: string;
@@ -13,16 +14,19 @@ type LoginFormInputs = {
 const LoginForm: React.FC = () => {
     const [isLoggingIn, setIsLoggingIn] = React.useState(false);
     const [errorMessage, setErrorMessage] = React.useState<string | undefined>();
-    const [success, setSuccess] = React.useState(false);
+    const [, setSuccess] = React.useState(false);
     const {
         register,
         handleSubmit,
-        watch,
         formState: {errors, isValid},
     } = useForm<LoginFormInputs>();
+    useAuth();
 
-    const authState = useAuth();
     const authDispatch = useAuthDispatch();
+
+    React.useEffect(() => {
+        console.log(errors);
+    }, [errors]);
 
     const onSubmit: SubmitHandler<LoginFormInputs> = async (data) => {
         setIsLoggingIn(true);
@@ -47,6 +51,7 @@ const LoginForm: React.FC = () => {
                 }
             } else {
                 setSuccess(true);
+                // TODO: Properly type this
                 // @ts-ignore
                 authDispatch({
                     type: AUTH_ACTION_TYPE.SET_TOKEN,
@@ -64,23 +69,24 @@ const LoginForm: React.FC = () => {
     return (
         <>
             <div className="login-form shadow-xl rounded bg-white p-5 min-w-96 min-h-96 flex flex-col justify-center items-center">
-                <div className="min-w-96">
+                <div className="min-w-96 flex flex-row justify-between items-start">
                     <h2>Login</h2>
+                    <img src={logo} alt="logo" className="mb-5 h-6" />
                 </div>
                 <div className="flex w-full">
-                    <form onSubmit={handleSubmit(onSubmit)} className="w-full">
+                <form onSubmit={handleSubmit(onSubmit)} className="w-full">
                         <div className="form-group">
                             <label htmlFor="email">E-mail</label>
                             <input type="email" {...register("email", {required: true})} />
                             {
-                                errors.email && <span>This field is required</span>
+                                errors.email && <span className="input-error">This field is required</span>
                             }
                         </div>
                         <div className="form-group">
                             <label htmlFor="password">Password</label>
                             <input type="password" {...register("password", {required: true})} />
                             {
-                                errors.password && <span>This field is required</span>
+                                errors.password && <span className="input-error">This field is required</span>
                             }
                         </div>
                         {
@@ -89,7 +95,7 @@ const LoginForm: React.FC = () => {
                             )
                         }
                         <div className="text-end flex flex-col justify-end">
-                            <Button text="Login" type="submit" color="primary" className="my-5" disabled={!isValid}
+                            <Button text="Login" type="submit" color="primary" className="my-5"
                                     busy={isLoggingIn}/>
                             <Link to="/register">New User? Register here.</Link>
                         </div>

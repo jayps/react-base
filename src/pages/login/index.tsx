@@ -2,6 +2,7 @@ import React from 'react';
 import LoginForm from '../../components/forms/login';
 import PublicPage from '../../components/containers/public-page';
 import {AuthProvider} from '../../context/auth/auth-context';
+import logo from './../../media/logo.svg';
 
 const LoginPage: React.FC = () => {
     return (

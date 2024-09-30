@@ -7,7 +7,7 @@ export type ButtonProps = {
     id?: string;
     onClick?: () => void;
     link?: string;
-    color?: 'primary' | 'secondary';
+    color?: 'primary' | 'secondary' | 'success';
     className?: string;
     disabled?: boolean;
     busy?: boolean;
@@ -24,7 +24,7 @@ const Button: React.FC<ButtonProps> = ({
                                            disabled,
                                            busy
                                        }) => {
-    const computedClassName = `${color || 'secondary'} ${className}`;
+    const computedClassName = `button ${color || 'secondary'} ${className}`;
     if (onClick) {
         return (
             <button className={computedClassName} onClick={onClick} id={id} type={type || 'button'}

@@ -6,11 +6,13 @@ import {PaginatedData} from '../../models/response';
 import {Link} from 'react-router-dom';
 import Button from '../../components/button';
 import {User} from '../../models/user';
+import EyeIcon from '../../components/icons/eye';
+import AddCircleIcon from '../../components/icons/add-circle';
 
 const UsersPage: React.FC = () => {
     const authState = useAuth();
     const [loading, setLoading] = React.useState(false);
-    const [error, setError] = React.useState<string|undefined>(undefined);
+    const [error, setError] = React.useState<string | undefined>(undefined);
     const [users, setUsers] = React.useState<PaginatedData<User>>({
         count: 0,
         next: '',
@@ -52,24 +54,43 @@ const UsersPage: React.FC = () => {
                 <h2>Users</h2>
                 <table>
                     <thead>
-                        <tr>
-                            <th>
-                                Email
-                            </th>
-                            <th>
-                                <Button text="+ New" color="primary" link="/users/new" />
-                            </th>
-                        </tr>
+                    <tr>
+                        <th style={{width: '15%'}}>
+                            Email
+                        </th>
+                        <th style={{width: '15%'}}>
+                            First Name
+                        </th>
+                        <th style={{width: '15%'}}>
+                            Last Name
+                        </th>
+                        <th style={{width: '55%'}} className="text-end pb-5">
+                            <Link to={`/users/new`} className="button sm success inline-block">
+                                <AddCircleIcon height={24} width={24}/>
+                            </Link>
+
+                        </th>
+                    </tr>
                     </thead>
                     <tbody>
                     {
                         users.results.map((user: User) => (
                             <tr key={user.id}>
-                                <td>
-                                    {user.email}
+                                <td style={{width: '15%'}}>
+                                    <Link to={`/users/${user.id}`}>
+                                        {user.email}
+                                    </Link>
                                 </td>
-                                <td>
-                                    <Link to={`/users/${user.id}`}>View</Link>
+                                <td style={{width: '15%'}}>
+                                    {user.firstName}
+                                </td>
+                                <td style={{width: '15%'}}>
+                                    {user.lastName}
+                                </td>
+                                <td style={{width: '55%'}} className="text-end">
+                                    <Link to={`/users/${user.id}`} className="button sm primary inline-block">
+                                        <EyeIcon height={24} width={24}/>
+                                    </Link>
                                 </td>
                             </tr>
                         ))

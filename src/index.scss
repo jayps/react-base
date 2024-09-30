@@ -64,7 +64,7 @@
 }
 
 body, h1, h2, h3, h4, h5, h6 {
-  @apply lato-light;
+  @apply lato-light text-gray-700;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -99,7 +99,7 @@ form {
   }
 }
 
-button {
+button, .button {
   .loader {
     @apply me-2;
   }
@@ -108,10 +108,22 @@ button {
   &.primary {
     @apply bg-blue-600 text-white border-blue-950 hover:bg-blue-800 active:bg-blue-950;
   }
+
+  &.success {
+    @apply bg-emerald-800 text-white hover:bg-emerald-950 active:bg-emerald-950;
+  }
+
+  &.sm {
+    @apply py-0.5 px-1.5;
+  }
+}
+
+.inline-block {
+  display: inline-block!important;
 }
 
 a {
-  @apply text-gray-900 underline;
+  @apply text-gray-900 underline underline-offset-2;
 }
 
 .alert {
@@ -169,4 +181,12 @@ th {
 
 .input-error {
   @apply text-red-700 text-xs;
+}
+
+tbody tr:nth-child(odd) {
+  @apply bg-gray-50;
+
+  td {
+    vertical-align: middle;
+  }
 }

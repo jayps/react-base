@@ -3,12 +3,11 @@ import Button from '../../button';
 import {SubmitHandler, useForm} from 'react-hook-form';
 import {Link} from 'react-router-dom';
 import Alert from '../../alert';
-import {AUTH_ACTION_TYPE, AuthProvider, useAuth, useAuthDispatch} from '../../../context/auth/auth-context';
+import {AUTH_ACTION_TYPE, useAuth, useAuthDispatch} from '../../../context/auth/auth-context';
 import logo from '../../../media/logo.svg';
 import Card from '../../card';
 import Input from '../input/Input';
-import {Simulate} from 'react-dom/test-utils';
-import error = Simulate.error;
+import {login} from '../../../services/auth';
 
 type LoginFormInputs = {
     email: string;
@@ -18,51 +17,28 @@ type LoginFormInputs = {
 const LoginForm: React.FC = () => {
     const [isLoggingIn, setIsLoggingIn] = React.useState(false);
     const [errorMessage, setErrorMessage] = React.useState<string | undefined>();
-    const [, setSuccess] = React.useState(false);
     const {
         register,
         handleSubmit,
-        formState: {errors, isValid},
+        formState: {errors},
     } = useForm<LoginFormInputs>();
     useAuth();
 
     const authDispatch = useAuthDispatch();
 
-    React.useEffect(() => {
-        console.log(errors);
-    }, [errors]);
-
     const onSubmit: SubmitHandler<LoginFormInputs> = async (data) => {
         setIsLoggingIn(true);
         setErrorMessage(undefined);
-        setSuccess(false);
+        
         try {
-            const httpResponse = await fetch(`${process.env.REACT_APP_API_BASE_URL}/auth/login/`, {
-                method: 'POST',
-                body: JSON.stringify(data),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
+            const response = await login(data.email, data.password);
+            // TODO: Properly type this
+            // @ts-ignore
+            authDispatch({
+                type: AUTH_ACTION_TYPE.SET_TOKEN,
+                payload: response.data
             });
-            const response = await httpResponse.json();
-            if (httpResponse.status !== 200) {
-                if (httpResponse.status === 401) {
-                    setErrorMessage('Incorrect e-mail address or password.')
-                } else if (response.data.detail) {
-                    setErrorMessage(response.data.detail);
-                } else {
-                    setErrorMessage('An error occurred. Please try again.')
-                }
-            } else {
-                setSuccess(true);
-                // TODO: Properly type this
-                // @ts-ignore
-                authDispatch({
-                    type: AUTH_ACTION_TYPE.SET_TOKEN,
-                    payload: response.data
-                });
-                localStorage.setItem('token', JSON.stringify(response.data));
-            }
+            localStorage.setItem('token', JSON.stringify(response.data));
         } catch (err) {
             setErrorMessage('An error occurred. Please try again.')
         }

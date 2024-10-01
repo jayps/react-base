@@ -50,7 +50,7 @@ const UsersPage: React.FC = () => {
 
     return (
         <PrivatePage>
-            <div className="flex flex-col">
+            <div className="flex flex-col card">
                 <h2>Users</h2>
                 <table>
                     <thead>

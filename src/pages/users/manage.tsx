@@ -46,7 +46,7 @@ const ManageUserPage: React.FC = () => {
 
     return (
         <PrivatePage>
-            <div className="flex flex-col">
+            <div className="flex flex-col card">
                 <h2>Manage User</h2>
                 {
                     (!id || (id && !loading)) && (

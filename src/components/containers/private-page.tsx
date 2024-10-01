@@ -10,11 +10,11 @@ const PrivatePage: React.FC<PropsWithChildren> = ({children}) => {
                 <img src={logo} alt="logo" className="mb-5 h-6"/>
                 <MainMenu/>
             </div>
-            <div className="col-span-1 md:col-span-6 lg:col-span-8 card">
-                <div className="px-10 py-5">
+            <div className="col-span-1 md:col-span-6 lg:col-span-8">
+                <div>
                     {children}
                 </div>
-            </div>\
+            </div>
         </div>
     )
 }

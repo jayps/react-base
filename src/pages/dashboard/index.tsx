@@ -7,7 +7,7 @@ const DashboardPage: React.FC = () => {
 
     return (
         <PrivatePage>
-            <div className="flex flex-col">
+            <div className="flex flex-col card">
                 <h2>Dashboard</h2>
                 <div>
                     Welcome, {authState.user?.firstName}

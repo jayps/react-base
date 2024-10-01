@@ -47,7 +47,7 @@ const GroupsPage: React.FC = () => {
 
     return (
         <PrivatePage>
-            <div className="flex flex-col">
+            <div className="flex flex-col card">
                 <h2>Groups</h2>
                 <table>
                     <thead>

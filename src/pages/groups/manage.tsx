@@ -49,7 +49,7 @@ const ManageGroupPage: React.FC = () => {
 
     return (
         <PrivatePage>
-            <div className="flex flex-col">
+            <div className="flex flex-col card">
                 <h2>Manage Group</h2>
                 {
                     (!id || (id && !loading)) && (

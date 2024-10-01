@@ -5,6 +5,10 @@ import {Link} from 'react-router-dom';
 import Alert from '../../alert';
 import {AUTH_ACTION_TYPE, AuthProvider, useAuth, useAuthDispatch} from '../../../context/auth/auth-context';
 import logo from '../../../media/logo.svg';
+import Card from '../../card';
+import Input from '../input/Input';
+import {Simulate} from 'react-dom/test-utils';
+import error = Simulate.error;
 
 type LoginFormInputs = {
     email: string;
@@ -67,42 +71,32 @@ const LoginForm: React.FC = () => {
     }
 
     return (
-        <>
-            <div className="login-form shadow-xl rounded bg-white p-5 min-w-96 min-h-96 flex flex-col justify-center items-center">
-                <div className="min-w-96 flex flex-row justify-between items-start">
-                    <h2>Login</h2>
-                    <img src={logo} alt="logo" className="mb-5 h-6" />
-                </div>
-                <div className="flex w-full">
-                <form onSubmit={handleSubmit(onSubmit)} className="w-full">
-                        <div className="form-group">
-                            <label htmlFor="email">E-mail</label>
-                            <input type="email" {...register("email", {required: true})} />
-                            {
-                                errors.email && <span className="input-error">This field is required</span>
-                            }
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="password">Password</label>
-                            <input type="password" {...register("password", {required: true})} />
-                            {
-                                errors.password && <span className="input-error">This field is required</span>
-                            }
-                        </div>
-                        {
-                            errorMessage && (
-                                <Alert severity="error">{errorMessage}</Alert>
-                            )
-                        }
-                        <div className="text-end flex flex-col justify-end">
-                            <Button text="Login" type="submit" color="primary" className="my-5"
-                                    busy={isLoggingIn}/>
-                            <Link to="/register">New User? Register here.</Link>
-                        </div>
-                    </form>
-                </div>
+        <Card>
+            <div className="min-w-96 flex flex-row justify-between items-start">
+                <h2>Login</h2>
+                <img src={logo} alt="logo" className="mb-5 h-6"/>
             </div>
-        </>
+            <div className="flex w-full">
+                <form onSubmit={handleSubmit(onSubmit)} className="w-full">
+                    <Input name="email" label="E-mail" type="email" register={register} errors={errors}
+                           required={true}
+                    />
+                    <Input name="password" label="Password" type="password" register={register} errors={errors}
+                           required={true}
+                    />
+                    <Alert severity="error" message={errorMessage}/>
+                    <div className="text-end flex flex-col justify-end">
+                        <Button text="Login"
+                                type="submit"
+                                color="primary"
+                                className="my-5"
+                                busy={isLoggingIn}
+                        />
+                        <Link to="/register">New User? Register here.</Link>
+                    </div>
+                </form>
+            </div>
+        </Card>
     )
 }
 

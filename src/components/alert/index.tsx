@@ -1,13 +1,18 @@
-import React, {PropsWithChildren} from 'react';
+import React from 'react';
 
 export type AlertProps = {
     severity: 'success' | 'warning' | 'error' | 'info';
+    message?: string;
 }
 
-const Alert: React.FC<PropsWithChildren<AlertProps>> = ({severity, children}) => {
+const Alert: React.FC<AlertProps> = ({severity, message}) => {
+    if (message) {
+        return null;
+    }
+
     return (
         <div className={`alert ${severity}`}>
-            {children}
+            {message}
         </div>
     )
 }

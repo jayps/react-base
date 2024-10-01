@@ -4,13 +4,14 @@ import GroupForm, {GroupInputs} from '../../components/forms/group';
 import {useParams} from 'react-router-dom';
 import {useAuth} from '../../context/auth/auth-context';
 import {Group} from '../../models/group';
+import Card from '../../components/card';
 
 const ManageGroupPage: React.FC = () => {
-    let { id } = useParams();
+    let {id} = useParams();
     const authState = useAuth();
     const [loading, setLoading] = React.useState(false);
-    const [error, setError] = React.useState<string|undefined>(undefined);
-    const [initialGroup, setInitialGroup] = React.useState<GroupInputs|undefined>()
+    const [error, setError] = React.useState<string | undefined>(undefined);
+    const [initialGroup, setInitialGroup] = React.useState<GroupInputs | undefined>()
 
     React.useEffect(() => {
         if (id) {
@@ -49,14 +50,14 @@ const ManageGroupPage: React.FC = () => {
 
     return (
         <PrivatePage>
-            <div className="flex flex-col card">
+            <Card>
                 <h2>Manage Group</h2>
                 {
                     (!id || (id && !loading)) && (
-                        <GroupForm initialGroup={initialGroup} />
+                        <GroupForm initialGroup={initialGroup}/>
                     )
                 }
-            </div>
+            </Card>
         </PrivatePage>
     )
 }

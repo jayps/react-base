@@ -8,6 +8,7 @@ import Button from '../../components/button';
 import {User} from '../../models/user';
 import EyeIcon from '../../components/icons/eye';
 import AddCircleIcon from '../../components/icons/add-circle';
+import Card from '../../components/card';
 
 const UsersPage: React.FC = () => {
     const authState = useAuth();
@@ -50,7 +51,7 @@ const UsersPage: React.FC = () => {
 
     return (
         <PrivatePage>
-            <div className="flex flex-col card">
+            <Card className="flex flex-col">
                 <h2>Users</h2>
                 <table>
                     <thead>
@@ -100,7 +101,7 @@ const UsersPage: React.FC = () => {
                 <div>
 
                 </div>
-            </div>
+            </Card>
         </PrivatePage>
     )
 }

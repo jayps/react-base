@@ -5,6 +5,7 @@ import {Group} from '../../models/group';
 import {PaginatedData} from '../../models/response';
 import {Link} from 'react-router-dom';
 import Button from '../../components/button';
+import Card from '../../components/card';
 
 const GroupsPage: React.FC = () => {
     const authState = useAuth();
@@ -47,7 +48,7 @@ const GroupsPage: React.FC = () => {
 
     return (
         <PrivatePage>
-            <div className="flex flex-col card">
+            <Card className="flex flex-col">
                 <h2>Groups</h2>
                 <table>
                     <thead>
@@ -81,10 +82,7 @@ const GroupsPage: React.FC = () => {
                     }
                     </tbody>
                 </table>
-                <div>
-
-                </div>
-            </div>
+            </Card>
         </PrivatePage>
     )
 }

@@ -5,6 +5,7 @@ import {useParams} from 'react-router-dom';
 import {useAuth} from '../../context/auth/auth-context';
 import {Group} from '../../models/group';
 import UserForm, {UserInputs} from '../../components/forms/user';
+import Card from '../../components/card';
 
 const ManageUserPage: React.FC = () => {
     let { id } = useParams();
@@ -46,14 +47,14 @@ const ManageUserPage: React.FC = () => {
 
     return (
         <PrivatePage>
-            <div className="flex flex-col card">
+            <Card>
                 <h2>Manage User</h2>
                 {
                     (!id || (id && !loading)) && (
                         <UserForm initialUser={initialUser} />
                     )
                 }
-            </div>
+            </Card>
         </PrivatePage>
     )
 }

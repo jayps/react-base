@@ -252,7 +252,7 @@ const GroupForm: React.FC<GroupFormProps> = ({initialGroup}) => {
             </div>
             {
                 error && (
-                    <Alert severity="error">{error}</Alert>
+                    <Alert severity="error" message={error} />
                 )
             }
             <div className="text-end flex justify-end">

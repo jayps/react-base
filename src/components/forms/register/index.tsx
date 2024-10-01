@@ -2,10 +2,10 @@ import React from 'react';
 import Button from '../../button';
 import {SubmitHandler, useForm} from 'react-hook-form';
 import {Link} from 'react-router-dom';
-import {Simulate} from 'react-dom/test-utils';
 import Alert from '../../alert';
 import Card from '../../card';
 import logo from '../../../media/logo.svg';
+import {registerUser} from '../../../services/register';
 
 type RegisterFormInputs = {
     firstName: string;
@@ -33,26 +33,20 @@ const RegisterForm: React.FC = () => {
         setErrorMessage(undefined);
         setSuccess(false);
         try {
-            const httpResponse = await fetch(`${process.env.REACT_APP_API_BASE_URL}/auth/register/`, {
-                method: 'POST',
-                body: JSON.stringify(data),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-            const response = await httpResponse.json();
-            if (httpResponse.status !== 201) {
-                if (response.data) {
-                    setErrorMessage(response.data);
-                } else {
-                    setErrorMessage('An error occurred during registration. Please try again.')
-                }
-            } else {
-                setSuccess(true);
-            }
+            await registerUser(
+                data.firstName,
+                data.lastName,
+                data.email,
+                data.password,
+                data.repeatPassword
+            );
+            setSuccess(true);
         } catch (err) {
-            console.error(err);
-            setErrorMessage('An error occurred during registration. Please try again.')
+            if (err instanceof Error) {
+                setErrorMessage(err.message)
+            } else {
+                setErrorMessage('An error has occurred. Please try again.');
+            }
         }
 
         setIsRegistering(false);
@@ -60,7 +54,7 @@ const RegisterForm: React.FC = () => {
 
     if (success) {
         return (
-            <Alert severity="success" message="You have registered an account. You can now log in" />
+            <Alert severity="success" message="You have registered an account. You can now log in"/>
         )
     }
 
@@ -121,7 +115,7 @@ const RegisterForm: React.FC = () => {
                     </div>
                     {
                         errorMessage && (
-                            <Alert severity="error" message={errorMessage} />
+                            <Alert severity="error" message={errorMessage}/>
                         )
                     }
                     <div className="text-end flex flex-col justify-end">

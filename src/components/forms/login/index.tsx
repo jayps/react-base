@@ -29,7 +29,7 @@ const LoginForm: React.FC = () => {
     const onSubmit: SubmitHandler<LoginFormInputs> = async (data) => {
         setIsLoggingIn(true);
         setErrorMessage(undefined);
-        
+
         try {
             const response = await login(data.email, data.password);
             // TODO: Properly type this
@@ -40,7 +40,11 @@ const LoginForm: React.FC = () => {
             });
             localStorage.setItem('token', JSON.stringify(response.data));
         } catch (err) {
-            setErrorMessage('An error occurred. Please try again.')
+            if (err instanceof Error) {
+                setErrorMessage(err.message)
+            } else {
+                setErrorMessage('An error has occurred. Please try again.');
+            }
         }
 
         setIsLoggingIn(false);

@@ -6,7 +6,7 @@ export type AlertProps = {
 }
 
 const Alert: React.FC<AlertProps> = ({severity, message}) => {
-    if (message) {
+    if (!message) {
         return null;
     }
 

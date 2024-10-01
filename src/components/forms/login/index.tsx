@@ -6,8 +6,8 @@ import Alert from '../../alert';
 import {AUTH_ACTION_TYPE, useAuth, useAuthDispatch} from '../../../context/auth/auth-context';
 import logo from '../../../media/logo.svg';
 import Card from '../../card';
-import Input from '../input/Input';
 import {login} from '../../../services/auth';
+import Input from '../elements/input/Input';
 
 type LoginFormInputs = {
     email: string;
@@ -32,7 +32,7 @@ const LoginForm: React.FC = () => {
 
         try {
             const response = await login(data.email, data.password);
-            // TODO: Properly type this
+            // TODO: Properly type this. Ensure authDispatch is not null.
             // @ts-ignore
             authDispatch({
                 type: AUTH_ACTION_TYPE.SET_TOKEN,

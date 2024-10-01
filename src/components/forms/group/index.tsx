@@ -59,7 +59,11 @@ const GroupForm: React.FC<GroupFormProps> = ({initialGroup}) => {
                     setError('An error occurred. Please try again.');
                 }
             } else {
-                setPermissions(response.data.map((permission: Permission) => ({name: permission.name, id: permission.id, codename: permission.codename})));
+                setPermissions(response.data.map((permission: Permission) => ({
+                    name: permission.name,
+                    id: permission.id,
+                    codename: permission.codename
+                })));
             }
         } catch (err) {
             setError('An error occurred. Please try again.')
@@ -108,7 +112,11 @@ const GroupForm: React.FC<GroupFormProps> = ({initialGroup}) => {
 
             const httpResponse = await fetch(url, {
                 method,
-                body: JSON.stringify({...data, permissions: selectedPermissions.map((p: Permission) => p.id), userSet: selectedUsers.map((u: User) => u.id)}),
+                body: JSON.stringify({
+                    ...data,
+                    permissions: selectedPermissions.map((p: Permission) => p.id),
+                    userSet: selectedUsers.map((u: User) => u.id)
+                }),
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${authState.accessToken}`,
@@ -175,7 +183,7 @@ const GroupForm: React.FC<GroupFormProps> = ({initialGroup}) => {
                         name="name"
                         control={control}
                         defaultValue={initialGroup?.name}
-                        render={({ field: { onChange, onBlur, value } }) => (
+                        render={({field: {onChange, onBlur, value}}) => (
                             <input
                                 type="text"
                                 placeholder="First name"
@@ -226,7 +234,8 @@ const GroupForm: React.FC<GroupFormProps> = ({initialGroup}) => {
                                     <option>Select user to add</option>
                                     {
                                         users.filter((u: User) => selectedUsers.findIndex((selectedUser) => selectedUser.id === u.id) === -1).map((u: User) => (
-                                            <option key={u.id} value={u.id}>{u.firstName} {u.lastName} ({u.email})</option>
+                                            <option key={u.id}
+                                                    value={u.id}>{u.firstName} {u.lastName} ({u.email})</option>
                                         ))
                                     }
                                 </select>
@@ -252,14 +261,12 @@ const GroupForm: React.FC<GroupFormProps> = ({initialGroup}) => {
             </div>
             {
                 error && (
-                    <Alert severity="error" message={error} />
+                    <Alert severity="error" message={error}/>
                 )
             }
             <div className="text-end flex justify-end">
-                <div>
-                    <Button text="Submit" type="submit" color="primary" className="my-5" disabled={!isValid}
-                            busy={saving}/>
-                </div>
+                <Button text="Submit" type="submit" color="primary" className="my-5" disabled={!isValid}
+                        busy={saving}/>
             </div>
         </form>
     )

@@ -25,42 +25,29 @@ const Button: React.FC<ButtonProps> = ({
                                            busy
                                        }) => {
     const computedClassName = `button ${color || 'secondary'} ${className}`;
-    if (onClick) {
-        return (
-            <button className={computedClassName} onClick={onClick} id={id} type={type || 'button'}
-                    disabled={disabled || busy || false}>
-                {
-                    busy && (
-                        <div className="loader"></div>
-                    )
-                }
-                <span>{text}</span>
-            </button>
-        )
-    } else if (link) {
-        return (
-            <Link to={link} className={computedClassName} id={id}>
-                {
-                    busy && (
-                        <div className="loader"></div>
-                    )
-                }
-                <span>{text}</span>
-            </Link>
-        )
-    } else {
-        return (
-            <button className={computedClassName} id={id} type={type || 'button'}
-                    disabled={disabled || busy || false}>
-                {
-                    busy && (
-                        <div className="loader"></div>
-                    )
-                }
-                <span>{text}</span>
-            </button>
-        );
-    }
+    return (
+        <button
+            className={computedClassName}
+            onClick={onClick}
+            id={id}
+            type={type || 'button'}
+            disabled={disabled || busy || false}>
+            {
+                busy && (
+                    <div className="loader"></div>
+                )
+            }
+            {
+                link ? (
+                    <Link to={link}>
+                        {text}
+                    </Link>
+                ) : (
+                    <span>{text}</span>
+                )
+            }
+        </button>
+    )
 }
 
 export default Button;

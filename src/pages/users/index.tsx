@@ -72,7 +72,7 @@ const UsersPage: React.FC = () => {
         <PrivatePage>
             <Card className="flex flex-col">
                 <h2>Users</h2>
-                <TableLoader loading={loading} columns={4} rows={5}>
+                <TableLoader loading={loading} columns={1} rows={5}>
                     <table>
                         <thead>
                         <tr>

@@ -6,11 +6,12 @@ import {PaginatedData} from '../../models/response';
 import {Link} from 'react-router-dom';
 import Button from '../../components/button';
 import Card from '../../components/card';
+import SimpleContentLoader from '../../components/loader/content-loader';
 
 const GroupsPage: React.FC = () => {
     const authState = useAuth();
     const [loading, setLoading] = React.useState(false);
-    const [error, setError] = React.useState<string|undefined>(undefined);
+    const [error, setError] = React.useState<string | undefined>(undefined);
     const [groups, setGroups] = React.useState<PaginatedData<Group>>({
         count: 0,
         next: '',
@@ -41,17 +42,20 @@ const GroupsPage: React.FC = () => {
                 }
             } catch (err) {
                 setError('An error occurred. Please try again.')
+            } finally {
+                setLoading(false);
             }
         })();
-        setLoading(false);
-    }, []);
+    }, [authState.accessToken]);
 
     return (
         <PrivatePage>
             <Card className="flex flex-col">
                 <h2>Groups</h2>
-                <table>
-                    <thead>
+                <SimpleContentLoader loading={loading}>
+
+                    <table>
+                        <thead>
                         <tr>
                             <th>
                                 Name
@@ -60,28 +64,29 @@ const GroupsPage: React.FC = () => {
                                 Permissions
                             </th>
                             <th>
-                                <Button text="+ New" color="primary" link="/groups/new" />
+                                <Button text="+ New" color="primary" link="/groups/new"/>
                             </th>
                         </tr>
-                    </thead>
-                    <tbody>
-                    {
-                        groups.results.map((group: Group) => (
-                            <tr key={group.id}>
-                                <td>
-                                    {group.name}
-                                </td>
-                                <td>
-                                    {group.permissions.length}
-                                </td>
-                                <td>
-                                    <Link to={`/groups/${group.id}`}>View</Link>
-                                </td>
-                            </tr>
-                        ))
-                    }
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                        {
+                            groups.results.map((group: Group) => (
+                                <tr key={group.id}>
+                                    <td>
+                                        {group.name}
+                                    </td>
+                                    <td>
+                                        {group.permissions.length}
+                                    </td>
+                                    <td>
+                                        <Link to={`/groups/${group.id}`}>View</Link>
+                                    </td>
+                                </tr>
+                            ))
+                        }
+                        </tbody>
+                    </table>
+                </SimpleContentLoader>
             </Card>
         </PrivatePage>
     )

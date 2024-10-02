@@ -5,6 +5,7 @@ import {useParams} from 'react-router-dom';
 import {useAuth} from '../../context/auth/auth-context';
 import {Group} from '../../models/group';
 import Card from '../../components/card';
+import SimpleContentLoader from '../../components/loader/content-loader';
 
 const ManageGroupPage: React.FC = () => {
     let {id} = useParams();
@@ -52,11 +53,14 @@ const ManageGroupPage: React.FC = () => {
         <PrivatePage>
             <Card>
                 <h2>Manage Group</h2>
-                {
-                    (!id || (id && !loading)) && (
-                        <GroupForm initialGroup={initialGroup}/>
-                    )
-                }
+                <SimpleContentLoader loading={loading}>
+
+                    {
+                        (!id || (id && !loading)) && (
+                            <GroupForm initialGroup={initialGroup}/>
+                        )
+                    }
+                </SimpleContentLoader>
             </Card>
         </PrivatePage>
     )

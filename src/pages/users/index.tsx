@@ -121,7 +121,7 @@ const UsersPage: React.FC = () => {
                         {users.previous &&
                             <Button onClick={loadPrevious} color="primary" text="&lt;" className="me-2"/>}
                         <span>
-                                    Page {page} of {Math.ceil(users.count / 2)}
+                                    Page {page} of {Math.ceil(users.count / 15)}
                                 </span>
                         {users.next && <Button onClick={loadNext} color="primary" text="&gt;" className="ms-2"/>}
                     </div>

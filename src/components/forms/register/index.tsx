@@ -6,6 +6,7 @@ import Alert from '../../alert';
 import Card from '../../card';
 import logo from '../../../media/logo.svg';
 import {registerUser} from '../../../services/register';
+import Input from '../elements/input/Input';
 
 type RegisterFormInputs = {
     firstName: string;
@@ -58,6 +59,8 @@ const RegisterForm: React.FC = () => {
         )
     }
 
+    console.log('errors', errors);
+
     return (
         <Card>
             <div className="min-w-96 flex flex-row justify-between items-start">
@@ -66,58 +69,27 @@ const RegisterForm: React.FC = () => {
             </div>
             <div className="flex flex-col w-full">
                 <form onSubmit={handleSubmit(onSubmit)} className="w-full">
-                    <div className="form-group">
-                        <label htmlFor="firstName">First Name</label>
-                        <input type="text" {...register("firstName", {required: true})} />
-                        {
-                            errors.firstName && <span>This field is required</span>
-                        }
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="lastName">First Name</label>
-                        <input type="text" {...register("lastName", {required: true})} />
-                        {
-                            errors.lastName && <span>This field is required</span>
-                        }
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="email">E-mail</label>
-                        <input type="email" {...register("email", {required: true})} />
-                        {
-                            errors.email && <span>This field is required</span>
-                        }
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="password">Password</label>
-                        <input type="password" {...register("password", {required: true})} />
-                        {
-                            errors.password && <span>This field is required</span>
-                        }
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="repeatPassword">Repeat Password</label>
-                        <input type="password" {...register("repeatPassword", {
-                            required: true,
-                            validate: (val: string) => {
-                                if (watch('password') !== val) {
-                                    setError('repeatPassword', {type: 'custom', message: 'Passwords do not match.'})
-                                    return false;
-                                } else {
-                                    clearErrors('repeatPassword');
-                                    return true;
-                                }
-                            }
-                        })} />
-                        {
-                            errors.repeatPassword &&
-                            <span>{errors.repeatPassword.message || 'This field is required'}</span>
-                        }
-                    </div>
-                    {
-                        errorMessage && (
-                            <Alert severity="error" message={errorMessage}/>
-                        )
-                    }
+                    <Input name="firstName" type="text" label="First name" errors={errors} register={register}
+                           required={true}/>
+                    <Input name="lastName" type="text" label="Last name" errors={errors} register={register}
+                           required={true}/>
+                    <Input name="email" type="email" label="E-mail" errors={errors} register={register}
+                           required={true}/>
+                    <Input name="password" type="password" label="Password" errors={errors} register={register}
+                           required={true}/>
+                    <Input name="password" type="password" label="Password" errors={errors} register={register}
+                           required={true}
+                           validate={(val: string) => {
+                               if (watch('password') !== val) {
+                                   setError('repeatPassword', {type: 'custom', message: 'Passwords do not match.'})
+                                   return false;
+                               } else {
+                                   clearErrors('repeatPassword');
+                                   return true;
+                               }
+                           }}
+                    />
+                    <Alert severity="error" message={errorMessage}/>
                     <div className="text-end flex flex-col justify-end">
                         <Button text="Register" type="submit" color="primary" className="my-5" disabled={!isValid}
                                 busy={isRegistering}/>

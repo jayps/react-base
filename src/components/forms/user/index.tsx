@@ -183,11 +183,7 @@ const UserForm: React.FC<UserFormProps> = ({initialUser}) => {
                 <label htmlFor="isSuperuser" className="ms-2">Is Superuser</label>
 
             </div>
-            {
-                error && (
-                    <Alert severity="error" message={error} />
-                )
-            }
+            <Alert severity="error" message={error}/>
             <div className="text-end flex justify-end">
                 <div>
                     <Button text="Submit" type="submit" color="primary" className="my-5" disabled={!isValid}

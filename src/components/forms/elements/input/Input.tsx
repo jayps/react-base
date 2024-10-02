@@ -8,14 +8,14 @@ export interface InputProps<T extends FieldValues> {
     required?: boolean;
     errors: FieldErrors;
     register: UseFormRegister<T>;
+    validate?: (val: string) => boolean;
 }
 
-const Input: React.FC<InputProps<any>> = ({name, label, type = 'text', required = false, errors, register}) => {
-    console.log(name, required, errors)
+const Input: React.FC<InputProps<any>> = ({name, label, type = 'text', required = false, errors, register, validate}) => {
     return (
         <div className="form-group">
             <label htmlFor={name}>{label}</label>
-            <input type={type} {...register(name, {required})} />
+            <input type={type} {...register(name, {required, validate})} />
             {
                 errors && errors[name] && <span className="input-error">This field is required</span>
             }

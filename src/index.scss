@@ -206,10 +206,18 @@ tbody tr:nth-child(odd) {
 table {
   tr {
     td {
+      &:has(button) {
+        @apply text-end;
+      }
       @apply py-2;
 
       &:first-child {
         @apply ps-2;
+      }
+    }
+    th {
+      &:has(button) {
+        @apply text-end;
       }
     }
   }

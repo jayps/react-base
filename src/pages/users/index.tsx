@@ -10,6 +10,7 @@ import EyeIcon from '../../components/icons/eye';
 import AddCircleIcon from '../../components/icons/add-circle';
 import Card from '../../components/card';
 import SimpleContentLoader from '../../components/loader/content-loader';
+import DataTable, {TableProps} from '../../components/table';
 
 const UsersPage: React.FC = () => {
     const authState = useAuth();
@@ -21,6 +22,7 @@ const UsersPage: React.FC = () => {
         previous: '',
         results: []
     });
+    const [usersTable, setUsersTable] = React.useState<TableProps | undefined>();
 
     const [page, setPage] = React.useState(1);
 
@@ -64,58 +66,51 @@ const UsersPage: React.FC = () => {
     }
 
     React.useEffect(() => {
-        console.log(loading);
-    }, [loading]);
+        setUsersTable({
+            headerRow: {
+                cells: [
+                    {content: 'E-mail', width: '25%'},
+                    {content: 'First Name', width: '25%'},
+                    {content: 'Last Name', width: '25%'},
+                    {
+                        content: <Button link={`/users/new`} color="success"
+                                         icon={<AddCircleIcon height={24} width={24}/>}
+                                         size="sm" text={"New User"}/>,
+                        width: '25%'
+                    }
+                ]
+            },
+            rows: users.results.map((user: User) => ({
+                cells: [
+                    {
+                        width: '25%',
+                        content: <Link to={`/users/${user.id}`}>
+                            {user.email}
+                        </Link>
+                    },
+                    {content: user.firstName, width: '25%'},
+                    {content: user.lastName, width: '25%'},
+                    {
+                        width: '25%',
+                        content: <Button link={`/users/${user.id}`} color="primary"
+                                         icon={<EyeIcon height={24} width={24}/>} size="sm"
+                                         text={"View"}/>
+                    }
+                ]
+            }))
+        });
+    }, [users]);
 
     return (
         <PrivatePage>
             <Card className="flex flex-col">
                 <h2>Users</h2>
                 <SimpleContentLoader loading={loading}>
-                    <table>
-                        <thead>
-                        <tr>
-                            <th style={{width: '25%'}}>
-                                Email
-                            </th>
-                            <th style={{width: '25%'}}>
-                                First Name
-                            </th>
-                            <th style={{width: '25%'}}>
-                                Last Name
-                            </th>
-                            <th style={{width: '25%'}} className="text-end pb-5">
-                                <Button link={`/users/new`} color="success"
-                                        icon={<AddCircleIcon height={24} width={24}/>}
-                                        size="sm" text={"New User"}/>
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {
-                            users.results.map((user: User) => (
-                                <tr key={user.id}>
-                                    <td style={{width: '25%'}} className="mb-5">
-                                        <Link to={`/users/${user.id}`}>
-                                            {user.email}
-                                        </Link>
-                                    </td>
-                                    <td style={{width: '25%'}} className="mb-5">
-                                        {user.firstName}
-                                    </td>
-                                    <td style={{width: '25%'}} className="mb-5">
-                                        {user.lastName}
-                                    </td>
-                                    <td style={{width: '25%'}} className="text-end mb-5">
-                                        <Button link={`/users/${user.id}`} color="primary"
-                                                icon={<EyeIcon height={24} width={24}/>} size="sm"
-                                                text={"View"}/>
-                                    </td>
-                                </tr>
-                            ))
-                        }
-                        </tbody>
-                    </table>
+                    {
+                        usersTable && (
+                            <DataTable headerRow={usersTable.headerRow} rows={usersTable.rows} />
+                        )
+                    }
                     <div className="flex justify-center items-center mt-5">
                         {users.previous &&
                             <Button onClick={loadPrevious} color="primary" text="&lt;" className="me-2"/>}

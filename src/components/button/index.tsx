@@ -42,24 +42,26 @@ const Button: React.FC<ButtonProps> = ({
             id={id}
             type={type || 'button'}
             disabled={disabled || busy || false}>
-            {
-                busy && (
-                    <div className="loader"></div>
-                )
-            }
-            {
-                link ? (
-                    <Link to={link}>
-                        {icon}
-                        {text && <span>{text}</span>}
-                    </Link>
-                ) : (
-                    <>
-                        {icon}
-                        {text && <span>{text}</span>}
-                    </>
-                )
-            }
+            <div className="flex justify-center">
+                {
+                    busy && (
+                        <div className="loader"></div>
+                    )
+                }
+                {
+                    link ? (
+                        <Link to={link}>
+                            {icon}
+                            {text && <span>{text}</span>}
+                        </Link>
+                    ) : (
+                        <>
+                            {icon}
+                            {text && <span>{text}</span>}
+                        </>
+                    )
+                }
+            </div>
         </button>
     )
 }

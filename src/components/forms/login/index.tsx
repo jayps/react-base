@@ -36,9 +36,9 @@ const LoginForm: React.FC = () => {
             // @ts-ignore
             authDispatch({
                 type: AUTH_ACTION_TYPE.SET_TOKEN,
-                payload: response.data
+                payload: response
             });
-            localStorage.setItem('token', JSON.stringify(response.data));
+            localStorage.setItem('token', JSON.stringify(response));
         } catch (err) {
             if (err instanceof Error) {
                 setErrorMessage(err.message)

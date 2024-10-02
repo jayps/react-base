@@ -59,8 +59,6 @@ const RegisterForm: React.FC = () => {
         )
     }
 
-    console.log('errors', errors);
-
     return (
         <Card>
             <div className="min-w-96 flex flex-row justify-between items-start">
@@ -77,7 +75,7 @@ const RegisterForm: React.FC = () => {
                            required={true}/>
                     <Input name="password" type="password" label="Password" errors={errors} register={register}
                            required={true}/>
-                    <Input name="password" type="password" label="Password" errors={errors} register={register}
+                    <Input name="repeatPassword" type="password" label="Password" errors={errors} register={register}
                            required={true}
                            validate={(val: string) => {
                                if (watch('password') !== val) {
@@ -91,8 +89,7 @@ const RegisterForm: React.FC = () => {
                     />
                     <Alert severity="error" message={errorMessage}/>
                     <div className="text-end flex flex-col justify-end">
-                        <Button text="Register" type="submit" color="primary" className="my-5" disabled={!isValid}
-                                busy={isRegistering}/>
+                        <Button text="Register" type="submit" color="primary" className="my-5" busy={isRegistering}/>
                         <Link to="/login">Already have an account? Login here.</Link>
                     </div>
                 </form>

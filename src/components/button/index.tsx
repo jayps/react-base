@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 
 export type ButtonProps = {
-    text: string;
+    text?: string;
     type?: 'button' | 'submit';
     id?: string;
     onClick?: () => void;
@@ -11,6 +11,8 @@ export type ButtonProps = {
     className?: string;
     disabled?: boolean;
     busy?: boolean;
+    icon?: React.ReactNode;
+    size?: 'sm' | 'lg';
 };
 
 const Button: React.FC<ButtonProps> = ({
@@ -22,9 +24,17 @@ const Button: React.FC<ButtonProps> = ({
                                            color,
                                            className,
                                            disabled,
-                                           busy
+                                           busy,
+                                           icon,
+                                           size
                                        }) => {
-    const computedClassName = `button ${color || 'secondary'} ${className}`;
+    let computedClassName = `button ${color || 'secondary'}`;
+    if (className) {
+        computedClassName += `${computedClassName} ${className}`;
+    }
+    if (size) {
+        computedClassName += `${computedClassName} ${size}`;
+    }
     return (
         <button
             className={computedClassName}
@@ -40,10 +50,14 @@ const Button: React.FC<ButtonProps> = ({
             {
                 link ? (
                     <Link to={link}>
-                        {text}
+                        {icon}
+                        {text && <span>{text}</span>}
                     </Link>
                 ) : (
-                    <span>{text}</span>
+                    <>
+                        {icon}
+                        {text && <span>{text}</span>}
+                    </>
                 )
             }
         </button>

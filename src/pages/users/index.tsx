@@ -9,6 +9,8 @@ import {User} from '../../models/user';
 import EyeIcon from '../../components/icons/eye';
 import AddCircleIcon from '../../components/icons/add-circle';
 import Card from '../../components/card';
+import ContentLoader from 'react-content-loader';
+import TableLoader from '../../components/loader/table';
 
 const UsersPage: React.FC = () => {
     const authState = useAuth();
@@ -21,11 +23,13 @@ const UsersPage: React.FC = () => {
         results: []
     });
 
+    const [page, setPage] = React.useState(1);
+
     React.useEffect(() => {
         setLoading(true);
         (async () => {
             try {
-                const httpResponse = await fetch(`${process.env.REACT_APP_API_BASE_URL}/users/`, {
+                const httpResponse = await fetch(`${process.env.REACT_APP_API_BASE_URL}/users/?page=${page}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -44,63 +48,84 @@ const UsersPage: React.FC = () => {
                 }
             } catch (err) {
                 setError('An error occurred. Please try again.')
+            } finally {
+                setLoading(false);
             }
         })();
-        setLoading(false);
-    }, []);
+    }, [authState.accessToken, page]);
+
+    const loadNext = () => {
+        setLoading(true);
+        setPage(page + 1);
+    }
+
+    const loadPrevious = () => {
+        setLoading(true);
+        setPage(page - 1);
+    }
+
+    React.useEffect(() => {
+        console.log(loading);
+    }, [loading]);
 
     return (
         <PrivatePage>
             <Card className="flex flex-col">
                 <h2>Users</h2>
-                <table>
-                    <thead>
-                    <tr>
-                        <th style={{width: '15%'}}>
-                            Email
-                        </th>
-                        <th style={{width: '15%'}}>
-                            First Name
-                        </th>
-                        <th style={{width: '15%'}}>
-                            Last Name
-                        </th>
-                        <th style={{width: '55%'}} className="text-end pb-5">
-                            <Link to={`/users/new`} className="button sm success inline-block">
-                                <AddCircleIcon height={24} width={24}/>
-                            </Link>
-
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {
-                        users.results.map((user: User) => (
-                            <tr key={user.id}>
-                                <td style={{width: '15%'}}>
-                                    <Link to={`/users/${user.id}`}>
-                                        {user.email}
-                                    </Link>
-                                </td>
-                                <td style={{width: '15%'}}>
-                                    {user.firstName}
-                                </td>
-                                <td style={{width: '15%'}}>
-                                    {user.lastName}
-                                </td>
-                                <td style={{width: '55%'}} className="text-end">
-                                    <Link to={`/users/${user.id}`} className="button sm primary inline-block">
-                                        <EyeIcon height={24} width={24}/>
-                                    </Link>
-                                </td>
-                            </tr>
-                        ))
-                    }
-                    </tbody>
-                </table>
-                <div>
-
-                </div>
+                <TableLoader loading={loading} columns={4} rows={5}>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th style={{width: '25%'}}>
+                                Email
+                            </th>
+                            <th style={{width: '25%'}}>
+                                First Name
+                            </th>
+                            <th style={{width: '25%'}}>
+                                Last Name
+                            </th>
+                            <th style={{width: '25%'}} className="text-end pb-5">
+                                <Button link={`/users/new`} color="success"
+                                        icon={<AddCircleIcon height={24} width={24}/>}
+                                        size="sm" text={"New User"}/>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {
+                            users.results.map((user: User) => (
+                                <tr key={user.id}>
+                                    <td style={{width: '25%'}} className="mb-5">
+                                        <Link to={`/users/${user.id}`}>
+                                            {user.email}
+                                        </Link>
+                                    </td>
+                                    <td style={{width: '25%'}} className="mb-5">
+                                        {user.firstName}
+                                    </td>
+                                    <td style={{width: '25%'}} className="mb-5">
+                                        {user.lastName}
+                                    </td>
+                                    <td style={{width: '25%'}} className="text-end mb-5">
+                                        <Button link={`/users/${user.id}`} color="primary"
+                                                icon={<EyeIcon height={24} width={24}/>} size="sm"
+                                                text={"View"}/>
+                                    </td>
+                                </tr>
+                            ))
+                        }
+                        </tbody>
+                    </table>
+                    <div className="flex justify-center items-center mt-5">
+                        {users.previous &&
+                            <Button onClick={loadPrevious} color="primary" text="&lt;" className="me-2"/>}
+                        <span>
+                                    Page {page} of {Math.ceil(users.count / 2)}
+                                </span>
+                        {users.next && <Button onClick={loadNext} color="primary" text="&gt;" className="ms-2"/>}
+                    </div>
+                </TableLoader>
             </Card>
         </PrivatePage>
     )

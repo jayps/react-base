@@ -7,6 +7,8 @@ import {Link} from 'react-router-dom';
 import Button from '../../components/button';
 import Card from '../../components/card';
 import SimpleContentLoader from '../../components/loader/content-loader';
+import EyeIcon from '../../components/icons/eye';
+import AddCircleIcon from '../../components/icons/add-circle';
 
 const GroupsPage: React.FC = () => {
     const authState = useAuth();
@@ -64,7 +66,9 @@ const GroupsPage: React.FC = () => {
                                 Permissions
                             </th>
                             <th>
-                                <Button text="+ New" color="primary" link="/groups/new"/>
+                                <Button link={`/groups/new`} color="success"
+                                        icon={<AddCircleIcon height={24} width={24}/>}
+                                        size="sm" text={"New Group"}/>
                             </th>
                         </tr>
                         </thead>
@@ -79,7 +83,9 @@ const GroupsPage: React.FC = () => {
                                         {group.permissions.length}
                                     </td>
                                     <td>
-                                        <Link to={`/groups/${group.id}`}>View</Link>
+                                        <Button link={`/groups/${group.id}`} color="primary"
+                                                icon={<EyeIcon height={24} width={24}/>} size="sm"
+                                                text={"View"}/>
                                     </td>
                                 </tr>
                             ))

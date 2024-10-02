@@ -5,6 +5,11 @@
   border-radius: 50%;
   border: 2px solid #FFF;
   animation: l20-1 0.8s infinite linear alternate, l20-2 1.6s infinite linear;
+
+  &.large {
+    width: 48px;
+    border: 2px solid #333;
+  }
 }
 
 @keyframes l20-1 {

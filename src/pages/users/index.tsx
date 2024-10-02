@@ -9,8 +9,7 @@ import {User} from '../../models/user';
 import EyeIcon from '../../components/icons/eye';
 import AddCircleIcon from '../../components/icons/add-circle';
 import Card from '../../components/card';
-import ContentLoader from 'react-content-loader';
-import TableLoader from '../../components/loader/table';
+import SimpleContentLoader from '../../components/loader/content-loader';
 
 const UsersPage: React.FC = () => {
     const authState = useAuth();
@@ -72,7 +71,7 @@ const UsersPage: React.FC = () => {
         <PrivatePage>
             <Card className="flex flex-col">
                 <h2>Users</h2>
-                <TableLoader loading={loading} columns={1} rows={5}>
+                <SimpleContentLoader loading={loading}>
                     <table>
                         <thead>
                         <tr>
@@ -125,7 +124,7 @@ const UsersPage: React.FC = () => {
                                 </span>
                         {users.next && <Button onClick={loadNext} color="primary" text="&gt;" className="ms-2"/>}
                     </div>
-                </TableLoader>
+                </SimpleContentLoader>
             </Card>
         </PrivatePage>
     )

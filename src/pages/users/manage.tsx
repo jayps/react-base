@@ -6,6 +6,7 @@ import {useAuth} from '../../context/auth/auth-context';
 import {Group} from '../../models/group';
 import UserForm, {UserInputs} from '../../components/forms/user';
 import Card from '../../components/card';
+import SimpleContentLoader from '../../components/loader/content-loader';
 
 const ManageUserPage: React.FC = () => {
     let { id } = useParams();
@@ -49,11 +50,13 @@ const ManageUserPage: React.FC = () => {
         <PrivatePage>
             <Card>
                 <h2>Manage User</h2>
-                {
-                    (!id || (id && !loading)) && (
-                        <UserForm initialUser={initialUser} />
-                    )
-                }
+                <SimpleContentLoader loading={loading}>
+                    {
+                        (!id || (id && !loading)) && (
+                            <UserForm initialUser={initialUser} />
+                        )
+                    }
+                </SimpleContentLoader>
             </Card>
         </PrivatePage>
     )

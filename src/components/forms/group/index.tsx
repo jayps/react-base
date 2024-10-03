@@ -1,9 +1,8 @@
 import React from 'react';
-import {Controller, SubmitHandler, useForm} from 'react-hook-form';
+import {SubmitHandler, useForm} from 'react-hook-form';
 import Alert from '../../alert';
 import Button from '../../button';
 import {useNavigate, useParams} from 'react-router-dom';
-import {useAuth} from '../../../context/auth/auth-context';
 import {Permission} from '../../../models/permission';
 import {User} from '../../../models/user';
 import {getPermissions} from '../../../services/permissions';
@@ -65,14 +64,6 @@ const GroupForm: React.FC<GroupFormProps> = ({initialGroup}) => {
         }
     }
 
-    React.useEffect(() => {
-        setLoading(true);
-        (async () => {
-            await loadData();
-        })();
-        setLoading(false);
-    }, []);
-
     const onSubmit: SubmitHandler<GroupInputs> = async (data) => {
         setSaving(true);
 
@@ -95,13 +86,6 @@ const GroupForm: React.FC<GroupFormProps> = ({initialGroup}) => {
         }
     }
 
-    React.useEffect(() => {
-        if (initialGroup) {
-            setSelectedPermissions(permissions.filter((p: Permission) => initialGroup.permissions.findIndex((initialPermission) => initialPermission === p.id) > -1))
-            setSelectedUsers(users.filter((u: User) => initialGroup.userSet.findIndex((initialUser) => initialUser === u.id) > -1))
-        }
-    }, [initialGroup, permissions, users]);
-
     const selectPermission = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const foundPermission: Permission | undefined = permissions.find((p: Permission) => p.id === parseInt(e.target.value));
         if (foundPermission) {
@@ -122,6 +106,21 @@ const GroupForm: React.FC<GroupFormProps> = ({initialGroup}) => {
     const removeSelectedUser = (userId: string) => {
         setSelectedUsers(selectedUsers.filter((u: User) => u.id !== userId));
     }
+
+    React.useEffect(() => {
+        setLoading(true);
+        (async () => {
+            await loadData();
+        })();
+        setLoading(false);
+    }, []);
+
+    React.useEffect(() => {
+        if (initialGroup) {
+            setSelectedPermissions(permissions.filter((p: Permission) => initialGroup.permissions.findIndex((initialPermission) => initialPermission === p.id) > -1))
+            setSelectedUsers(users.filter((u: User) => initialGroup.userSet.findIndex((initialUser) => initialUser === u.id) > -1))
+        }
+    }, [initialGroup, permissions, users]);
 
     return (
         <SimpleContentLoader loading={loading}>

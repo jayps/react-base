@@ -10,7 +10,7 @@ export const login = async (email: string, password: string) => {
     if (httpResponse.status !== 200) {
         if (httpResponse.status === 401) {
             throw new Error('Incorrect e-mail address or password.')
-        } else if (response.data.detail) {
+        } else if (response.data && response.data.detail) {
             throw new Error(response.data.detail);
         } else {
             throw new Error('An error occurred. Please try again.')

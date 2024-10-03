@@ -10,6 +10,7 @@ import {getPermissions} from '../../../services/permissions';
 import {getUsers} from '../../../services/users';
 import SimpleContentLoader from '../../loader/content-loader';
 import {saveGroup} from '../../../services/groups';
+import Input from '../elements/input/Input';
 
 export interface GroupInputs {
     name: string;
@@ -29,7 +30,6 @@ const GroupForm: React.FC<GroupFormProps> = ({initialGroup}) => {
     const [selectedPermissions, setSelectedPermissions] = React.useState<Permission[]>([]);
     const [users, setUsers] = React.useState<User[]>([]);
     const [selectedUsers, setSelectedUsers] = React.useState<User[]>([]);
-    const authState = useAuth();
     const navigate = useNavigate();
     const {id} = useParams();
 
@@ -46,8 +46,8 @@ const GroupForm: React.FC<GroupFormProps> = ({initialGroup}) => {
 
     const loadPermissions = async () => {
         try {
-            const permissions = await getPermissions();
-            setPermissions(permissions.map((permission: Permission) => ({
+            const fetchedPermissions = await getPermissions();
+            setPermissions(fetchedPermissions.map((permission: Permission) => ({
                 name: permission.name,
                 id: permission.id,
                 codename: permission.codename
@@ -63,8 +63,8 @@ const GroupForm: React.FC<GroupFormProps> = ({initialGroup}) => {
 
     const loadAllUsers = async () => {
         try {
-            const users = await getUsers();
-            setUsers(users);
+            const fetchedUsers = await getUsers();
+            setUsers(fetchedUsers);
         } catch (err) {
             if (err instanceof Error) {
                 setError(err.message)
@@ -142,24 +142,7 @@ const GroupForm: React.FC<GroupFormProps> = ({initialGroup}) => {
         <SimpleContentLoader loading={loading}>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div>
-                    <div className="form-group">
-                        <label htmlFor="name">Name</label>
-                        <Controller
-                            name="name"
-                            control={control}
-                            defaultValue={initialGroup?.name}
-                            render={({field: {onChange, onBlur, value}}) => (
-                                <input
-                                    type="text"
-                                    placeholder="First name"
-                                    onBlur={onBlur}
-                                    onChange={onChange}
-                                    value={value}
-                                />
-                            )}
-                            rules={{required: true}}
-                        />
-                    </div>
+                    <Input name="name" errors={errors} register={register} required={true}/>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                         <div>
                             <h4>Permissions</h4>
@@ -231,8 +214,7 @@ const GroupForm: React.FC<GroupFormProps> = ({initialGroup}) => {
                     )
                 }
                 <div className="text-end flex justify-end">
-                    <Button text="Submit" type="submit" color="primary" className="my-5" disabled={!isValid}
-                            busy={saving}/>
+                    <Button text="Submit" type="submit" color="primary" className="my-5" busy={saving}/>
                 </div>
             </form>
         </SimpleContentLoader>

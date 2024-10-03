@@ -7,7 +7,6 @@ export interface CheckboxProps<T extends FieldValues> {
     type?: string;
     required?: boolean;
     errors: FieldErrors;
-    validate?: (val: string) => boolean;
     control: Control<T, any>;
     defaultValue?: boolean;
 }
@@ -20,25 +19,6 @@ const Checkbox: React.FC<CheckboxProps<any>> = ({
                                                     control,
                                                     defaultValue = false
                                                 }) => {
-    const getError = () => {
-        const defaultMessage = 'Please check your input.'
-        if (errors && errors[name]) {
-            const errorType = errors[name]?.type as string;
-            switch (errorType.toLowerCase()) {
-                case 'required':
-                    return 'This field is required.';
-                case 'custom':
-                    return errors[name]?.message as string || defaultMessage;
-                case 'validate':
-                    return '';
-                default:
-                    return defaultMessage;
-            }
-        }
-
-        return defaultMessage;
-    }
-
     return (
         <div className="form-group" data-testid="checkbox-container">
             <Controller
@@ -61,7 +41,10 @@ const Checkbox: React.FC<CheckboxProps<any>> = ({
             />
             <label htmlFor={name} className="ms-2">{label}</label>
             {
-                errors && errors[name] && <span className="input-error block" data-testid="checkbox-error">{getError()}</span>
+                errors && errors[name] &&
+                <span className="input-error block" data-testid="checkbox-error">
+                    This field is required.
+                </span>
             }
         </div>
     )

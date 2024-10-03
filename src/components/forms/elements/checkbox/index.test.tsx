@@ -1,13 +1,12 @@
 import {useForm} from 'react-hook-form';
-import {UserInputs} from '../../user';
-import {act, fireEvent, render, renderHook, screen} from '@testing-library/react';
+import {act, fireEvent, render, renderHook, screen, waitFor} from '@testing-library/react';
 import Checkbox from './index';
 import React from 'react';
 
 describe('Checkbox', () => {
     it('should submit successfully', async () => {
         const mockSubmit = jest.fn(({testCheckbox}) => {
-            console.log(testCheckbox)
+            // do nothing
         });
 
         const TestForm: React.FC = () => {
@@ -33,26 +32,25 @@ describe('Checkbox', () => {
 
         // Get checkbox and check it
         const checkboxElement = screen.getByTestId('checkbox');
-        fireEvent.input(checkboxElement, {
-            target: {
-                checked: true
-            }
+        await act(async () => {
+            fireEvent.click(checkboxElement);
         });
+
         // Check that checkbox is checked
         expect(checkboxElement).toBeChecked();
 
         // Submit form, check that checkbox value comes through
         const submitButtonElement = screen.getByTestId('test-button');
-        fireEvent.submit(submitButtonElement);
+        await act(async () => {
+            fireEvent.click(submitButtonElement);
+        });
 
-        // IMPORTANT: Wait for next tick... Allows async processes like form submission to complete.
-        await new Promise(process.nextTick);
-        expect(mockSubmit).toHaveBeenCalled();
+        expect(mockSubmit).toHaveBeenCalledWith({"testCheckbox": true}, expect.anything());
     });
 
     it('should show error when required and unchecked', async () => {
         const mockSubmit = jest.fn(({testCheckbox}) => {
-            console.log(testCheckbox)
+            // Do nothing
         });
 
         const TestForm: React.FC = () => {
@@ -69,7 +67,7 @@ describe('Checkbox', () => {
                 </form>
             )
         }
-        
+
         render(<TestForm/>)
 
         // Get checkbox and check it
@@ -79,10 +77,11 @@ describe('Checkbox', () => {
 
         // Submit form
         const submitButtonElement = screen.getByTestId('test-button');
-        fireEvent.submit(submitButtonElement);
 
-        // IMPORTANT: Wait for next tick... Allows async processes like form submission to complete.
-        await new Promise(process.nextTick);
+        await act(async () => {
+            fireEvent.submit(submitButtonElement);
+        });
+
         expect(mockSubmit).not.toHaveBeenCalled();
         const errorElement = await screen.findByTestId('checkbox-error');
         expect(errorElement).not.toBeNull();

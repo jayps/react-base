@@ -21,7 +21,7 @@ export interface UserFormProps {
 }
 
 const UserForm: React.FC<UserFormProps> = ({initialUser}) => {
-    const [error, setError] = React.useState<string | undefined>();
+    const [errorMessage, setErrorMessage] = React.useState<string | undefined>();
     const [saving, setSaving] = React.useState(false);
     const navigate = useNavigate();
     const {id} = useParams();
@@ -29,7 +29,9 @@ const UserForm: React.FC<UserFormProps> = ({initialUser}) => {
     const {
         handleSubmit,
         formState: {errors, isValid},
-        control
+        control,
+        setError,
+        clearErrors
     } = useForm<UserInputs>({
         defaultValues: initialUser
     });
@@ -49,9 +51,9 @@ const UserForm: React.FC<UserFormProps> = ({initialUser}) => {
             navigate('/users');
         } catch (err) {
             if (err instanceof Error) {
-                setError(err.message)
+                setErrorMessage(err.message)
             } else {
-                setError('An error has occurred. Please try again.');
+                setErrorMessage('An error has occurred. Please try again.');
             }
         } finally {
             setSaving(false);
@@ -63,10 +65,10 @@ const UserForm: React.FC<UserFormProps> = ({initialUser}) => {
             <Input name="email" label="E-mail address" type="email" errors={errors} required={true} control={control} />
             <Input name="firstName" label="First Name" errors={errors} required={true} control={control}/>
             <Input name="lastName" label="Last Name" errors={errors} required={true} control={control} />
-            <Checkbox name="isActive" errors={errors} control={control} defaultValue={initialUser?.isActive} label="Is Active" />
+            <Checkbox name="isActive" errors={errors} control={control} defaultValue={initialUser?.isActive} label="Is Active"/>
             <Checkbox name="isStaff" errors={errors} control={control} defaultValue={initialUser?.isStaff} label="Is Staff" />
             <Checkbox name="isSuperuser" errors={errors} control={control} defaultValue={initialUser?.isSuperuser} label="Is Superuser" />
-            <Alert severity="error" message={error}/>
+            <Alert severity="error" message={errorMessage}/>
             <div className="text-end flex justify-end">
                 <div>
                     <Button text="Submit" type="submit" color="primary" className="my-5" busy={saving}/>

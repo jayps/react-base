@@ -9,6 +9,7 @@ export interface InputProps<T extends FieldValues> {
     errors: FieldErrors;
     validate?: (val: string) => boolean;
     control: Control<T, any>;
+    defaultValue?: string;
 }
 
 const Input: React.FC<InputProps<any>> = ({
@@ -18,7 +19,8 @@ const Input: React.FC<InputProps<any>> = ({
                                               required = false,
                                               errors,
                                               validate,
-                                              control
+                                              control,
+                                              defaultValue
                                           }) => {
     const getError = () => {
         const defaultMessage = 'Please check your input.'
@@ -43,12 +45,13 @@ const Input: React.FC<InputProps<any>> = ({
         <Controller
             name={name}
             control={control}
+            defaultValue={defaultValue}
             rules={{
                 required,
                 validate
             }}
             render={({field: {onChange, onBlur, value}}) => (
-                <div className="form-group">
+                <div className="form-group" data-testid="input-container">
                     <label htmlFor={name}>{label}</label>
                     <input
                         type={type}
@@ -56,9 +59,10 @@ const Input: React.FC<InputProps<any>> = ({
                         onBlur={onBlur}
                         onChange={onChange}
                         value={value}
+                        data-testid="input"
                     />
                     {
-                        errors && errors[name] && <span className="input-error">{getError()}</span>
+                        errors && errors[name] && <span className="input-error" data-testid="input-error">{getError()}</span>
                     }
                 </div>
             )}

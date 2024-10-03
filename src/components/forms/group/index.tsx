@@ -158,11 +158,7 @@ const GroupForm: React.FC<GroupFormProps> = ({initialGroup}) => {
                         />
                     </div>
                 </div>
-                {
-                    error && (
-                        <Alert severity="error" message={error}/>
-                    )
-                }
+                <Alert severity="error" message={error}/>
                 <div className="text-end flex justify-end">
                     <Button text="Submit" type="submit" color="primary" className="my-5" busy={saving}/>
                 </div>

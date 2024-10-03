@@ -69,8 +69,7 @@ const UserForm: React.FC<UserFormProps> = ({initialUser}) => {
             <Alert severity="error" message={error}/>
             <div className="text-end flex justify-end">
                 <div>
-                    <Button text="Submit" type="submit" color="primary" className="my-5" disabled={!isValid}
-                            busy={saving}/>
+                    <Button text="Submit" type="submit" color="primary" className="my-5" busy={saving}/>
                 </div>
             </div>
         </form>

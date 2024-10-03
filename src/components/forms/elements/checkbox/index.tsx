@@ -40,7 +40,7 @@ const Checkbox: React.FC<CheckboxProps<any>> = ({
     }
 
     return (
-        <div className="form-group">
+        <div className="form-group" data-testid="checkbox-container">
             <Controller
                 name={name}
                 control={control}
@@ -55,12 +55,13 @@ const Checkbox: React.FC<CheckboxProps<any>> = ({
                         onBlur={onBlur}
                         onChange={onChange}
                         checked={value}
+                        data-testid="checkbox"
                     />
                 )}
             />
             <label htmlFor={name} className="ms-2">{label}</label>
             {
-                errors && errors[name] && <span className="input-error">{getError()}</span>
+                errors && errors[name] && <span className="input-error block" data-testid="checkbox-error">{getError()}</span>
             }
         </div>
     )

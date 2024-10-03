@@ -11,7 +11,7 @@ export const getPermissions = async () => {
     });
     const response = await httpResponse.json();
     if (httpResponse.status !== 200) {
-        if (response.data.detail) {
+        if (response.data && response.data.detail) {
             throw new Error(response.data.detail);
         } else {
             throw new Error('An error occurred. Please try again.');

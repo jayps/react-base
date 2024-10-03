@@ -12,7 +12,7 @@ export const getGroups = async () => {
     });
     const response = await httpResponse.json();
     if (httpResponse.status !== 200) {
-        if (response.data.detail) {
+        if (response.data && response.data.detail) {
             throw new Error(response.data.detail);
         } else {
             throw new Error('An error occurred. Please try again.');
@@ -43,7 +43,7 @@ export const saveGroup = async (name: string, userSet: string[], permissions: nu
     if (httpResponse.status !== 200 && httpResponse.status !== 201) {
         if (httpResponse.status === 403) {
             throw new Error('You do not have permission to manage groups.')
-        } else if (response.data.detail) {
+        } else if (response.data && response.data.detail) {
             throw new Error(response.data.detail);
         } else {
             throw new Error('An error occurred. Please try again.')
@@ -62,7 +62,7 @@ export const fetchGroupById = async (id: string) => {
     });
     const response = await httpResponse.json();
     if (httpResponse.status !== 200) {
-        if (response.data.detail) {
+        if (response.data && response.data.detail) {
             throw new Error(response.data.detail);
         } else {
             throw new Error('An error occurred. Please try again.');

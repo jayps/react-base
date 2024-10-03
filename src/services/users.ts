@@ -11,7 +11,7 @@ export const getAllUsers = async () => {
     });
     const response = await httpResponse.json();
     if (httpResponse.status !== 200) {
-        if (response.data.detail) {
+        if (response.data && response.data.detail) {
             throw new Error(response.data.detail);
         } else {
             throw new Error('An error occurred. Please try again.');
@@ -32,7 +32,7 @@ export const getUsers = async (page: number) => {
     });
     const response = await httpResponse.json();
     if (httpResponse.status !== 200) {
-        if (response.data.detail) {
+        if (response.data && response.data.detail) {
             throw new Error(response.data.detail);
         } else {
             throw new Error('An error occurred. Please try again.');
@@ -74,7 +74,7 @@ export const saveUser = async (
     if (httpResponse.status !== 200 && httpResponse.status !== 201) {
         if (httpResponse.status === 403) {
             throw new Error('You do not have permission to manage users.')
-        } else if (response.data.detail) {
+        } else if (response.data && response.data.detail) {
             throw new Error(response.data.detail);
         } else {
             throw new Error('An error occurred. Please try again.')
@@ -93,7 +93,7 @@ export const fetchUserById = async (id: string) => {
     });
     const response = await httpResponse.json();
     if (httpResponse.status !== 200) {
-        if (response.data.detail) {
+        if (response.data && response.data.detail) {
             throw new Error(response.data.detail);
         } else {
             throw new Error('An error occurred. Please try again.');

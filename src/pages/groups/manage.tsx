@@ -6,6 +6,8 @@ import {useAuth} from '../../context/auth/auth-context';
 import {Group} from '../../models/group';
 import Card from '../../components/card';
 import SimpleContentLoader from '../../components/loader/content-loader';
+import {fetchUserById} from '../../services/users';
+import {fetchGroupById} from '../../services/groups';
 
 const ManageGroupPage: React.FC = () => {
     let {id} = useParams();
@@ -19,32 +21,21 @@ const ManageGroupPage: React.FC = () => {
             setLoading(true);
             (async () => {
                 try {
-                    const httpResponse = await fetch(`${process.env.REACT_APP_API_BASE_URL}/users/groups/${id}/`, {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${authState.accessToken}`,
-                        }
+                    const group = await fetchGroupById(id);
+                    setInitialGroup({
+                        name: group.name,
+                        permissions: group.permissions.map((p: any) => p.id),
+                        userSet: group.userSet.map((u: any) => u.id),
                     });
-                    const response = await httpResponse.json();
-                    if (httpResponse.status !== 200) {
-                        if (response.data.detail) {
-                            setError(response.data.detail);
-                        } else {
-                            setError('An error occurred. Please try again.');
-                        }
-                    } else {
-                        setInitialGroup({
-                            name: response.data.name,
-                            permissions: response.data.permissions.map((p: any) => p.id),
-                            userSet: response.data.userSet.map((u: any) => u.id),
-                        });
-                    }
                 } catch (err) {
-                    setError('An error occurred. Please try again.')
+                    if (err instanceof Error) {
+                        setError(err.message)
+                    } else {
+                        setError('An error has occurred. Please try again.');
+                    }
+                } finally {
+                    setLoading(false);
                 }
-                setLoading(false);
-
             })();
         }
     }, [authState.accessToken, id]);

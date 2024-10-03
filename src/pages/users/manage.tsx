@@ -27,8 +27,9 @@ const ManageUserPage: React.FC = () => {
                     } else {
                         setError('An error has occurred. Please try again.');
                     }
+                } finally {
+                    setLoading(false);
                 }
-                setLoading(false);
 
             })();
         }

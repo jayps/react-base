@@ -45,6 +45,7 @@ const GroupForm: React.FC<GroupFormProps> = ({initialGroup}) => {
     });
 
     const loadData = async () => {
+        setLoading(true);
         try {
             const fetchedPermissions = await getPermissions();
             setPermissions(fetchedPermissions.map((permission: Permission) => ({
@@ -61,6 +62,8 @@ const GroupForm: React.FC<GroupFormProps> = ({initialGroup}) => {
             } else {
                 setError('An error has occurred. Please try again.');
             }
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -108,11 +111,7 @@ const GroupForm: React.FC<GroupFormProps> = ({initialGroup}) => {
     }
 
     React.useEffect(() => {
-        setLoading(true);
-        (async () => {
-            await loadData();
-        })();
-        setLoading(false);
+        loadData();
     }, []);
 
     React.useEffect(() => {
@@ -150,7 +149,10 @@ const GroupForm: React.FC<GroupFormProps> = ({initialGroup}) => {
                                     {value: u.id, label: `${u.firstName} ${u.lastName} (${u.email})`}
                                 ))
                             }
-                            selectedOptions={selectedUsers.map((u: User) => ({value: u.id, label: `${u.firstName} ${u.lastName} (${u.email})`}))}
+                            selectedOptions={selectedUsers.map((u: User) => ({
+                                value: u.id,
+                                label: `${u.firstName} ${u.lastName} (${u.email})`
+                            }))}
                             onRemove={removeSelectedUser}
                             id="user-selector"
                         />

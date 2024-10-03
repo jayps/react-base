@@ -1,12 +1,11 @@
 import React from 'react';
 import PrivatePage from '../../components/containers/private-page';
-import GroupForm, {GroupInputs} from '../../components/forms/group';
 import {useParams} from 'react-router-dom';
 import {useAuth} from '../../context/auth/auth-context';
-import {Group} from '../../models/group';
 import UserForm, {UserInputs} from '../../components/forms/user';
 import Card from '../../components/card';
 import SimpleContentLoader from '../../components/loader/content-loader';
+import {fetchUserById} from '../../services/users';
 
 const ManageUserPage: React.FC = () => {
     let { id } = useParams();
@@ -20,25 +19,14 @@ const ManageUserPage: React.FC = () => {
             setLoading(true);
             (async () => {
                 try {
-                    const httpResponse = await fetch(`${process.env.REACT_APP_API_BASE_URL}/users/${id}/`, {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${authState.accessToken}`,
-                        }
-                    });
-                    const response = await httpResponse.json();
-                    if (httpResponse.status !== 200) {
-                        if (response.data.detail) {
-                            setError(response.data.detail);
-                        } else {
-                            setError('An error occurred. Please try again.');
-                        }
-                    } else {
-                        setInitialUser(response.data);
-                    }
+                    const user = await fetchUserById(id);
+                    setInitialUser(user);
                 } catch (err) {
-                    setError('An error occurred. Please try again.')
+                    if (err instanceof Error) {
+                        setError(err.message)
+                    } else {
+                        setError('An error has occurred. Please try again.');
+                    }
                 }
                 setLoading(false);
 

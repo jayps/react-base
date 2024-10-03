@@ -1,12 +1,8 @@
-import React, {ChangeEventHandler} from 'react';
-import {Group} from '../../../models/group';
-import {Controller, SubmitHandler, useForm} from 'react-hook-form';
+import React from 'react';
+import {SubmitHandler, useForm} from 'react-hook-form';
 import Alert from '../../alert';
 import Button from '../../button';
-import {Link, useNavigate, useParams} from 'react-router-dom';
-import {AUTH_ACTION_TYPE, useAuth} from '../../../context/auth/auth-context';
-import {Permission} from '../../../models/permission';
-import {User} from '../../../models/user';
+import {useNavigate, useParams} from 'react-router-dom';
 import {saveUser} from '../../../services/users';
 import Input from '../elements/input/Input';
 import Checkbox from '../elements/checkbox';
@@ -26,19 +22,13 @@ export interface UserFormProps {
 
 const UserForm: React.FC<UserFormProps> = ({initialUser}) => {
     const [error, setError] = React.useState<string | undefined>();
-    const [success, setSuccess] = React.useState(false);
     const [saving, setSaving] = React.useState(false);
-    const [loading, setLoading] = React.useState(false);
-    const authState = useAuth();
     const navigate = useNavigate();
     const {id} = useParams();
 
     const {
-        register,
         handleSubmit,
-        watch,
         formState: {errors, isValid},
-        reset,
         control
     } = useForm<UserInputs>({
         defaultValues: initialUser

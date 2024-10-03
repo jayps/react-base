@@ -11,7 +11,7 @@ const Alert: React.FC<AlertProps> = ({severity, message}) => {
     }
 
     return (
-        <div className={`alert ${severity}`}>
+        <div className={`alert ${severity}`} data-testid="alert">
             {message}
         </div>
     )

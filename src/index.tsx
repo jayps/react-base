@@ -13,8 +13,6 @@ import {AuthProvider} from './context/auth/auth-context';
 import AuthenticatedRoute from './components/authenticated-route';
 import UnauthenticatedRoute from './components/unauthenticated-route';
 import GroupsPage from './pages/groups';
-import CreateGroupPage from './pages/groups/manage';
-import GroupDetailPage from './pages/groups/manage';
 import ManageGroupPage from './pages/groups/manage';
 import UsersPage from './pages/users';
 import ManageUserPage from './pages/users/manage';

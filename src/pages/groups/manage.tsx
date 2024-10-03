@@ -3,11 +3,10 @@ import PrivatePage from '../../components/containers/private-page';
 import GroupForm, {GroupInputs} from '../../components/forms/group';
 import {useParams} from 'react-router-dom';
 import {useAuth} from '../../context/auth/auth-context';
-import {Group} from '../../models/group';
 import Card from '../../components/card';
 import SimpleContentLoader from '../../components/loader/content-loader';
-import {fetchUserById} from '../../services/users';
 import {fetchGroupById} from '../../services/groups';
+import Alert from '../../components/alert';
 
 const ManageGroupPage: React.FC = () => {
     let {id} = useParams();
@@ -45,12 +44,12 @@ const ManageGroupPage: React.FC = () => {
             <Card>
                 <h2>Manage Group</h2>
                 <SimpleContentLoader loading={loading}>
-
                     {
                         (!id || (id && !loading)) && (
                             <GroupForm initialGroup={initialGroup}/>
                         )
                     }
+                    <Alert severity="error" message={error}/>
                 </SimpleContentLoader>
             </Card>
         </PrivatePage>

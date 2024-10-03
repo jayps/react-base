@@ -10,6 +10,7 @@ import EyeIcon from '../../components/icons/eye';
 import AddCircleIcon from '../../components/icons/add-circle';
 import DataTable, {TableProps} from '../../components/table';
 import {getGroups} from '../../services/groups';
+import Alert from '../../components/alert';
 
 const GroupsPage: React.FC = () => {
     const authState = useAuth();
@@ -78,6 +79,7 @@ const GroupsPage: React.FC = () => {
                             <DataTable headerRow={groupsTable.headerRow} rows={groupsTable.rows}/>
                         )
                     }
+                    <Alert severity="error" message={error} />
                 </SimpleContentLoader>
             </Card>
         </PrivatePage>

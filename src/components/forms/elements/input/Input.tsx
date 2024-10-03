@@ -1,5 +1,5 @@
 import React from 'react';
-import {Control, Controller, FieldErrors, FieldValues, UseFormRegister} from 'react-hook-form';
+import {Control, Controller, FieldErrors, FieldValues} from 'react-hook-form';
 
 export interface InputProps<T extends FieldValues> {
     name: string;

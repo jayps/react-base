@@ -1,12 +1,10 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
 import {AUTH_ACTION_TYPE, useAuth, useAuthDispatch} from '../../context/auth/auth-context';
 import MenuLink from './menu-link';
 import PermittedMenuLink from './permitted-menu-link';
 
 const MainMenu: React.FC = () => {
     const authDispatch = useAuthDispatch();
-    const authState = useAuth();
     const [adminExpanded, setAdminExpanded] = React.useState(false);
 
 

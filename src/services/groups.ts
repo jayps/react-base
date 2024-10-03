@@ -1,6 +1,4 @@
 import {getTokenFromStorage} from '../utils';
-import {Permission} from '../models/permission';
-import {User} from '../models/user';
 
 export const getGroups = async () => {
     const accessToken = getTokenFromStorage();

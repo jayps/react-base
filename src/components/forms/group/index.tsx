@@ -108,7 +108,9 @@ const GroupForm: React.FC<GroupFormProps> = ({initialGroup}) => {
     }
 
     React.useEffect(() => {
-        loadData();
+        (async () => {
+            await loadData()
+        })();
     }, []);
 
     React.useEffect(() => {

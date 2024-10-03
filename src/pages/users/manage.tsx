@@ -6,6 +6,7 @@ import UserForm, {UserInputs} from '../../components/forms/user';
 import Card from '../../components/card';
 import SimpleContentLoader from '../../components/loader/content-loader';
 import {fetchUserById} from '../../services/users';
+import Alert from '../../components/alert';
 
 const ManageUserPage: React.FC = () => {
     let { id } = useParams();
@@ -30,7 +31,6 @@ const ManageUserPage: React.FC = () => {
                 } finally {
                     setLoading(false);
                 }
-
             })();
         }
     }, [authState.accessToken, id]);
@@ -45,6 +45,7 @@ const ManageUserPage: React.FC = () => {
                             <UserForm initialUser={initialUser} />
                         )
                     }
+                    <Alert severity="error" message={error} />
                 </SimpleContentLoader>
             </Card>
         </PrivatePage>

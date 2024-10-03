@@ -1,4 +1,3 @@
-import {Permission} from '../../models/permission';
 import React from 'react';
 
 export interface MultiSelectOption {

@@ -21,10 +21,9 @@ const RegisterForm: React.FC = () => {
     const [errorMessage, setErrorMessage] = React.useState<string | undefined>();
     const [success, setSuccess] = React.useState(false);
     const {
-        register,
         handleSubmit,
         watch,
-        formState: {errors, isValid},
+        formState: {errors},
         setError,
         clearErrors,
         control

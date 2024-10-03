@@ -1,7 +1,6 @@
 import React from 'react';
 import PrivatePage from '../../components/containers/private-page';
-import {AUTH_ACTION_TYPE, useAuth} from '../../context/auth/auth-context';
-import {Group} from '../../models/group';
+import {useAuth} from '../../context/auth/auth-context';
 import {PaginatedData} from '../../models/response';
 import {Link} from 'react-router-dom';
 import Button from '../../components/button';
@@ -12,6 +11,7 @@ import Card from '../../components/card';
 import SimpleContentLoader from '../../components/loader/content-loader';
 import DataTable, {TableProps} from '../../components/table';
 import {getUsers} from '../../services/users';
+import Alert from '../../components/alert';
 
 const UsersPage: React.FC = () => {
     const authState = useAuth();
@@ -109,6 +109,7 @@ const UsersPage: React.FC = () => {
                                 </span>
                         {users.next && <Button onClick={loadNext} color="primary" text="&gt;" className="ms-2"/>}
                     </div>
+                    <Alert severity="error" message={error} />
                 </SimpleContentLoader>
             </Card>
         </PrivatePage>

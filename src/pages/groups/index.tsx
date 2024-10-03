@@ -1,16 +1,14 @@
 import React from 'react';
 import PrivatePage from '../../components/containers/private-page';
-import {AUTH_ACTION_TYPE, useAuth} from '../../context/auth/auth-context';
+import {useAuth} from '../../context/auth/auth-context';
 import {Group} from '../../models/group';
 import {PaginatedData} from '../../models/response';
-import {Link} from 'react-router-dom';
 import Button from '../../components/button';
 import Card from '../../components/card';
 import SimpleContentLoader from '../../components/loader/content-loader';
 import EyeIcon from '../../components/icons/eye';
 import AddCircleIcon from '../../components/icons/add-circle';
 import DataTable, {TableProps} from '../../components/table';
-import {User} from '../../models/user';
 import {getGroups} from '../../services/groups';
 
 const GroupsPage: React.FC = () => {

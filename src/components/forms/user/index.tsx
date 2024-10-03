@@ -7,6 +7,9 @@ import {Link, useNavigate, useParams} from 'react-router-dom';
 import {AUTH_ACTION_TYPE, useAuth} from '../../../context/auth/auth-context';
 import {Permission} from '../../../models/permission';
 import {User} from '../../../models/user';
+import {saveUser} from '../../../services/users';
+import Input from '../elements/input/Input';
+import Checkbox from '../elements/checkbox';
 
 export interface UserInputs {
     email: string;
@@ -43,146 +46,36 @@ const UserForm: React.FC<UserFormProps> = ({initialUser}) => {
 
     const onSubmit: SubmitHandler<UserInputs> = async (data) => {
         setSaving(true);
-
         try {
-            const url: string = id ? `${process.env.REACT_APP_API_BASE_URL}/users/${id}/` : `${process.env.REACT_APP_API_BASE_URL}/users/`
-            const method = id ? 'PUT' : 'POST';
-
-            const httpResponse = await fetch(url, {
-                method,
-                body: JSON.stringify({...data}),
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${authState.accessToken}`,
-                }
-            });
-            const response = await httpResponse.json();
-            if (httpResponse.status !== 200 && httpResponse.status !== 201) {
-                if (httpResponse.status === 403) {
-                    setError('You do not have permission to manage users.')
-                } else if (response.data.detail) {
-                    setError(response.data.detail);
-                } else {
-                    setError('An error occurred. Please try again.')
-                }
-            } else {
-                navigate('/users');
-            }
+            await saveUser(
+                data.email,
+                data.firstName,
+                data.lastName,
+                data.isStaff,
+                data.isSuperuser,
+                data.isActive,
+                id
+            )
+            navigate('/users');
         } catch (err) {
-            setError('An error occurred. Please try again.')
+            if (err instanceof Error) {
+                setError(err.message)
+            } else {
+                setError('An error has occurred. Please try again.');
+            }
+        } finally {
+            setSaving(false);
         }
-
-        setSaving(false);
     }
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="form-group">
-                <label htmlFor="name">E-mail Address</label>
-                <Controller
-                    name="email"
-                    control={control}
-                    defaultValue={initialUser?.email}
-                    render={({field: {onChange, onBlur, value}}) => (
-                        <input
-                            type="email"
-                            placeholder="E-mail Address"
-                            onBlur={onBlur}
-                            onChange={onChange}
-                            value={value}
-                        />
-                    )}
-                    rules={{required: true}}
-                />
-            </div>
-            <div className="form-group">
-                <label htmlFor="firstName">First Name</label>
-                <Controller
-                    name="firstName"
-                    control={control}
-                    defaultValue={initialUser?.firstName}
-                    render={({field: {onChange, onBlur, value}}) => (
-                        <input
-                            type="text"
-                            placeholder="First Name"
-                            onBlur={onBlur}
-                            onChange={onChange}
-                            value={value}
-                        />
-                    )}
-                    rules={{required: true}}
-                />
-            </div>
-            <div className="form-group">
-                <label htmlFor="lastName">Last Name</label>
-                <Controller
-                    name="lastName"
-                    control={control}
-                    defaultValue={initialUser?.lastName}
-                    render={({field: {onChange, onBlur, value}}) => (
-                        <input
-                            type="text"
-                            placeholder="Last Name"
-                            onBlur={onBlur}
-                            onChange={onChange}
-                            value={value}
-                        />
-                    )}
-                    rules={{required: true}}
-                />
-            </div>
-            <div className="form-group">
-                <Controller
-                    name="isActive"
-                    control={control}
-                    defaultValue={initialUser?.isActive}
-                    render={({field: {onChange, onBlur, value}}) => (
-                        <input
-                            type="checkbox"
-                            placeholder="Is Active"
-                            onBlur={onBlur}
-                            onChange={onChange}
-                            checked={value}
-                        />
-                    )}
-                />
-                <label htmlFor="isActive" className="ms-2">Is Active</label>
-            </div>
-            <div className="form-group">
-                <Controller
-                    name="isStaff"
-                    control={control}
-                    defaultValue={initialUser?.isStaff}
-                    render={({field: {onChange, onBlur, value}}) => (
-                        <input
-                            type="checkbox"
-                            placeholder="Is Staff"
-                            onBlur={onBlur}
-                            onChange={onChange}
-                            checked={value}
-                        />
-                    )}
-                />
-                <label htmlFor="isStaff" className="ms-2">Is Staff</label>
-            </div>
-            <div className="form-group">
-                <Controller
-                    name="isSuperuser"
-                    control={control}
-                    defaultValue={initialUser?.isSuperuser}
-                    render={({field: {onChange, onBlur, value}}) => (
-                        <input
-                            type="checkbox"
-                            placeholder="Is Superuser"
-                            onBlur={onBlur}
-                            onChange={onChange}
-                            checked={value}
-                        />
-                    )}
-                />
-                <label htmlFor="isSuperuser" className="ms-2">Is Superuser</label>
-
-            </div>
+            <Input name="email" label="E-mail address" type="email" errors={errors} required={true} control={control} />
+            <Input name="firstName" label="First Name" errors={errors} required={true} control={control}/>
+            <Input name="lastName" label="Last Name" errors={errors} required={true} control={control} />
+            <Checkbox name="isActive" errors={errors} control={control} defaultValue={initialUser?.isActive} label="Is Active" />
+            <Checkbox name="isStaff" errors={errors} control={control} defaultValue={initialUser?.isStaff} label="Is Staff" />
+            <Checkbox name="isSuperuser" errors={errors} control={control} defaultValue={initialUser?.isSuperuser} label="Is Superuser" />
             <Alert severity="error" message={error}/>
             <div className="text-end flex justify-end">
                 <div>

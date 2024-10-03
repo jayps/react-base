@@ -34,11 +34,8 @@ const GroupForm: React.FC<GroupFormProps> = ({initialGroup}) => {
     const {id} = useParams();
 
     const {
-        register,
         handleSubmit,
-        watch,
-        formState: {errors, isValid},
-        reset,
+        formState: {errors},
         control
     } = useForm<GroupInputs>({
         defaultValues: initialGroup
@@ -125,7 +122,7 @@ const GroupForm: React.FC<GroupFormProps> = ({initialGroup}) => {
         <SimpleContentLoader loading={loading}>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div>
-                    <Input name="name" errors={errors} register={register} required={true}/>
+                    <Input name="name" errors={errors} required={true} control={control}/>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                         <MultiSelect
                             onSelect={selectPermission}

@@ -18,9 +18,9 @@ const LoginForm: React.FC = () => {
     const [isLoggingIn, setIsLoggingIn] = React.useState(false);
     const [errorMessage, setErrorMessage] = React.useState<string | undefined>();
     const {
-        register,
         handleSubmit,
         formState: {errors},
+        control
     } = useForm<LoginFormInputs>();
     useAuth();
 
@@ -58,10 +58,10 @@ const LoginForm: React.FC = () => {
             </div>
             <div className="flex w-full">
                 <form onSubmit={handleSubmit(onSubmit)} className="w-full">
-                    <Input name="email" label="E-mail" type="email" register={register} errors={errors}
+                    <Input name="email" label="E-mail" type="email" errors={errors} control={control}
                            required={true}
                     />
-                    <Input name="password" label="Password" type="password" register={register} errors={errors}
+                    <Input name="password" label="Password" type="password" errors={errors} control={control}
                            required={true}
                     />
                     <Alert severity="error" message={errorMessage}/>

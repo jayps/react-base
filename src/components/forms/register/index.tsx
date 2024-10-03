@@ -26,7 +26,8 @@ const RegisterForm: React.FC = () => {
         watch,
         formState: {errors, isValid},
         setError,
-        clearErrors
+        clearErrors,
+        control
     } = useForm<RegisterFormInputs>();
 
     const onSubmit: SubmitHandler<RegisterFormInputs> = async (data) => {
@@ -67,15 +68,15 @@ const RegisterForm: React.FC = () => {
             </div>
             <div className="flex flex-col w-full">
                 <form onSubmit={handleSubmit(onSubmit)} className="w-full">
-                    <Input name="firstName" type="text" label="First name" errors={errors} register={register}
+                    <Input name="firstName" type="text" label="First name" errors={errors} control={control}
                            required={true}/>
-                    <Input name="lastName" type="text" label="Last name" errors={errors} register={register}
+                    <Input name="lastName" type="text" label="Last name" errors={errors} control={control}
                            required={true}/>
-                    <Input name="email" type="email" label="E-mail" errors={errors} register={register}
+                    <Input name="email" type="email" label="E-mail" errors={errors} control={control}
                            required={true}/>
-                    <Input name="password" type="password" label="Password" errors={errors} register={register}
+                    <Input name="password" type="password" label="Password" errors={errors} control={control}
                            required={true}/>
-                    <Input name="repeatPassword" type="password" label="Password" errors={errors} register={register}
+                    <Input name="repeatPassword" type="password" label="Password" errors={errors} control={control}
                            required={true}
                            validate={(val: string) => {
                                if (watch('password') !== val) {

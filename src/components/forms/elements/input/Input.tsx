@@ -1,5 +1,5 @@
 import React from 'react';
-import {FieldErrors, FieldValues, UseFormRegister} from 'react-hook-form';
+import {Control, Controller, FieldErrors, FieldValues, UseFormRegister} from 'react-hook-form';
 
 export interface InputProps<T extends FieldValues> {
     name: string;
@@ -7,11 +7,19 @@ export interface InputProps<T extends FieldValues> {
     type?: string;
     required?: boolean;
     errors: FieldErrors;
-    register: UseFormRegister<T>;
     validate?: (val: string) => boolean;
+    control: Control<T, any>;
 }
 
-const Input: React.FC<InputProps<any>> = ({name, label, type = 'text', required = false, errors, register, validate}) => {
+const Input: React.FC<InputProps<any>> = ({
+                                              name,
+                                              label,
+                                              type = 'text',
+                                              required = false,
+                                              errors,
+                                              validate,
+                                              control
+                                          }) => {
     const getError = () => {
         const defaultMessage = 'Please check your input.'
         if (errors && errors[name]) {
@@ -32,14 +40,30 @@ const Input: React.FC<InputProps<any>> = ({name, label, type = 'text', required 
     }
 
     return (
-        <div className="form-group">
-            <label htmlFor={name}>{label}</label>
-            <input type={type} {...register(name, {required, validate})} />
-            {
-                errors && errors[name] && <span className="input-error">{getError()}</span>
-            }
-        </div>
-    )
+        <Controller
+            name={name}
+            control={control}
+            rules={{
+                required,
+                validate
+            }}
+            render={({field: {onChange, onBlur, value}}) => (
+                <div className="form-group">
+                    <label htmlFor={name}>{label}</label>
+                    <input
+                        type={type}
+                        placeholder={label}
+                        onBlur={onBlur}
+                        onChange={onChange}
+                        value={value}
+                    />
+                    {
+                        errors && errors[name] && <span className="input-error">{getError()}</span>
+                    }
+                </div>
+            )}
+        />
+    );
 }
 
 export default Input;

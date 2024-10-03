@@ -11,6 +11,7 @@ import AddCircleIcon from '../../components/icons/add-circle';
 import Card from '../../components/card';
 import SimpleContentLoader from '../../components/loader/content-loader';
 import DataTable, {TableProps} from '../../components/table';
+import {getUsers} from '../../services/users';
 
 const UsersPage: React.FC = () => {
     const authState = useAuth();
@@ -30,25 +31,14 @@ const UsersPage: React.FC = () => {
         setLoading(true);
         (async () => {
             try {
-                const httpResponse = await fetch(`${process.env.REACT_APP_API_BASE_URL}/users/?page=${page}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${authState.accessToken}`,
-                    }
-                });
-                const response = await httpResponse.json();
-                if (httpResponse.status !== 200) {
-                    if (response.data.detail) {
-                        setError(response.data.detail);
-                    } else {
-                        setError('An error occurred. Please try again.');
-                    }
-                } else {
-                    setUsers(response.data);
-                }
+                const fetchedUsers = await getUsers(page);
+                setUsers(fetchedUsers);
             } catch (err) {
-                setError('An error occurred. Please try again.')
+                if (err instanceof Error) {
+                    setError(err.message)
+                } else {
+                    setError('An error has occurred. Please try again.');
+                }
             } finally {
                 setLoading(false);
             }

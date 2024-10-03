@@ -6,7 +6,7 @@ import {useNavigate, useParams} from 'react-router-dom';
 import {Permission} from '../../../models/permission';
 import {User} from '../../../models/user';
 import {getPermissions} from '../../../services/permissions';
-import {getUsers} from '../../../services/users';
+import {getAllUsers} from '../../../services/users';
 import SimpleContentLoader from '../../loader/content-loader';
 import {saveGroup} from '../../../services/groups';
 import Input from '../elements/input/Input';
@@ -51,7 +51,7 @@ const GroupForm: React.FC<GroupFormProps> = ({initialGroup}) => {
                 codename: permission.codename
             })));
 
-            const fetchedUsers = await getUsers();
+            const fetchedUsers = await getAllUsers();
             setUsers(fetchedUsers);
         } catch (err) {
             if (err instanceof Error) {

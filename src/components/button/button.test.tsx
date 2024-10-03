@@ -29,7 +29,7 @@ describe('button', () => {
         expect(buttonElement).not.toHaveAttribute('onClick');
     });
 
-    it('should render properties corectly', () => {
+    it('should render properties correctly', () => {
         render(
             <Button color="primary" text="Submit" size="sm" className="custom-class"/>
         );

@@ -11,6 +11,7 @@ import {getUsers} from '../../../services/users';
 import SimpleContentLoader from '../../loader/content-loader';
 import {saveGroup} from '../../../services/groups';
 import Input from '../elements/input/Input';
+import MultiSelect from '../../multi-select';
 
 export interface GroupInputs {
     name: string;
@@ -44,7 +45,7 @@ const GroupForm: React.FC<GroupFormProps> = ({initialGroup}) => {
         defaultValues: initialGroup
     });
 
-    const loadPermissions = async () => {
+    const loadData = async () => {
         try {
             const fetchedPermissions = await getPermissions();
             setPermissions(fetchedPermissions.map((permission: Permission) => ({
@@ -52,17 +53,7 @@ const GroupForm: React.FC<GroupFormProps> = ({initialGroup}) => {
                 id: permission.id,
                 codename: permission.codename
             })));
-        } catch (err) {
-            if (err instanceof Error) {
-                setError(err.message)
-            } else {
-                setError('An error has occurred. Please try again.');
-            }
-        }
-    }
 
-    const loadAllUsers = async () => {
-        try {
             const fetchedUsers = await getUsers();
             setUsers(fetchedUsers);
         } catch (err) {
@@ -77,8 +68,7 @@ const GroupForm: React.FC<GroupFormProps> = ({initialGroup}) => {
     React.useEffect(() => {
         setLoading(true);
         (async () => {
-            await loadPermissions();
-            await loadAllUsers();
+            await loadData();
         })();
         setLoading(false);
     }, []);
@@ -108,14 +98,9 @@ const GroupForm: React.FC<GroupFormProps> = ({initialGroup}) => {
     React.useEffect(() => {
         if (initialGroup) {
             setSelectedPermissions(permissions.filter((p: Permission) => initialGroup.permissions.findIndex((initialPermission) => initialPermission === p.id) > -1))
-        }
-    }, [initialGroup, initialGroup?.permissions, permissions]);
-
-    React.useEffect(() => {
-        if (initialGroup) {
             setSelectedUsers(users.filter((u: User) => initialGroup.userSet.findIndex((initialUser) => initialUser === u.id) > -1))
         }
-    }, [initialGroup, users]);
+    }, [initialGroup, permissions, users]);
 
     const selectPermission = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const foundPermission: Permission | undefined = permissions.find((p: Permission) => p.id === parseInt(e.target.value));
@@ -130,12 +115,12 @@ const GroupForm: React.FC<GroupFormProps> = ({initialGroup}) => {
         }
     }
 
-    const removeSelectedPermission = (permission: Permission) => {
-        setSelectedPermissions(selectedPermissions.filter((p: Permission) => p.id !== permission.id));
+    const removeSelectedPermission = (permissionId: number) => {
+        setSelectedPermissions(selectedPermissions.filter((p: Permission) => p.id !== permissionId));
     }
 
-    const removeSelectedUser = (user: User) => {
-        setSelectedUsers(selectedUsers.filter((u: User) => u.id !== user.id));
+    const removeSelectedUser = (userId: string) => {
+        setSelectedUsers(selectedUsers.filter((u: User) => u.id !== userId));
     }
 
     return (
@@ -144,68 +129,32 @@ const GroupForm: React.FC<GroupFormProps> = ({initialGroup}) => {
                 <div>
                     <Input name="name" errors={errors} register={register} required={true}/>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                        <div>
-                            <h4>Permissions</h4>
-                            <div className="flex flex-col min-h-48 overflow-y-scroll border p-2 mb-1">
-                                <div className="form-group">
-                                    <select onChange={selectPermission} id="permissions-selector"
-                                            className="form-select">
-                                        <option>Select permission to add</option>
-                                        {
-                                            permissions.filter((p: Permission) => selectedPermissions.findIndex((selectedPermission) => selectedPermission.id === p.id) === -1).map((p: Permission) => (
-                                                <option key={p.id} value={p.id}>{p.name}</option>
-                                            ))
-                                        }
-                                    </select>
-                                </div>
-                                <h4>Selected Permissions</h4>
-                                {
-                                    selectedPermissions.map((p: Permission) => (
-                                        <span key={`permission-${p.codename}`}
-                                              className="border border-gray-300 block w-full py-1 px-2 rounded mb-2 flex justify-between">
-                                        <span>
-                                            {p.name}
-                                        </span>
-                                        <span onClick={() => removeSelectedPermission(p)}
-                                              className="hover:cursor-pointer border border-gray-200 hover:bg-gray-300 bg-gray-200 px-1 roounded">
-                                            &times;
-                                        </span>
-                                    </span>
-                                    ))
-                                }
-                            </div>
-                        </div>
-                        <div>
-                            <h4>Users</h4>
-                            <div className="flex flex-col min-h-48 overflow-y-scroll border p-2 mb-1">
-                                <div className="form-group">
-                                    <select onChange={selectUser} id="permissions-selector" className="form-select">
-                                        <option>Select user to add</option>
-                                        {
-                                            users.filter((u: User) => selectedUsers.findIndex((selectedUser) => selectedUser.id === u.id) === -1).map((u: User) => (
-                                                <option key={u.id}
-                                                        value={u.id}>{u.firstName} {u.lastName} ({u.email})</option>
-                                            ))
-                                        }
-                                    </select>
-                                </div>
-                                <h4>Selected Users</h4>
-                                {
-                                    selectedUsers.map((u: User) => (
-                                        <span key={`user-${u.id}`}
-                                              className="border border-gray-300 block w-full py-1 px-2 rounded mb-2 flex justify-between">
-                                        <span>
-                                            {u.firstName} {u.lastName} ({u.email})
-                                        </span>
-                                        <span onClick={() => removeSelectedUser(u)}
-                                              className="hover:cursor-pointer border border-gray-200 hover:bg-gray-300 bg-gray-200 px-1 roounded">
-                                            &times;
-                                        </span>
-                                    </span>
-                                    ))
-                                }
-                            </div>
-                        </div>
+                        <MultiSelect
+                            onSelect={selectPermission}
+                            heading="Permissions"
+                            prompt="Select permission to add"
+                            selectedText="Selected Permissions"
+                            options={permissions.filter((p: Permission) => selectedPermissions.findIndex((selectedPermission) => selectedPermission.id === p.id) === -1)
+                                .map((p: Permission) => ({value: p.id, label: p.name}))
+                            }
+                            selectedOptions={selectedPermissions.map((p: Permission) => ({value: p.id, label: p.name}))}
+                            onRemove={removeSelectedPermission}
+                            id="permission-selector"
+                        />
+                        <MultiSelect
+                            onSelect={selectUser}
+                            heading="Users"
+                            prompt="Select a user to add"
+                            selectedText="Selected Users"
+                            options={
+                                users.filter((u: User) => selectedUsers.findIndex((selectedUser) => selectedUser.id === u.id) === -1).map((u: User) => (
+                                    {value: u.id, label: `${u.firstName} ${u.lastName} (${u.email})`}
+                                ))
+                            }
+                            selectedOptions={selectedUsers.map((u: User) => ({value: u.id, label: `${u.firstName} ${u.lastName} (${u.email})`}))}
+                            onRemove={removeSelectedUser}
+                            id="user-selector"
+                        />
                     </div>
                 </div>
                 {

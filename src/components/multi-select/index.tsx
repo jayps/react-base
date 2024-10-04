@@ -1,20 +1,20 @@
 import React from 'react';
 
 export interface MultiSelectOption {
-    value: string | number;
+    value: string;
     label: string;
 }
 
 export interface MultiSelectProps {
     // eslint-disable-next-line no-unused-vars
-    onSelect: (value: string | number) => void;
+    onSelect: (value: string) => void;
     heading: string;
     prompt: string;
     selectedText: string;
     options: MultiSelectOption[];
     selectedOptions: MultiSelectOption[];
     // eslint-disable-next-line no-unused-vars
-    onRemove: (value: string | number) => void;
+    onRemove: (value: string) => void;
     id: string;
 }
 

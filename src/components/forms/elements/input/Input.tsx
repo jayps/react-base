@@ -1,7 +1,7 @@
 import React from 'react';
-import { Control, Controller, FieldErrors } from 'react-hook-form';
+import { Control, Controller, FieldErrors, FieldValues } from 'react-hook-form';
 
-export interface InputProps {
+export interface InputProps<T extends FieldValues> {
     name: string;
     label?: string;
     type?: string;
@@ -9,11 +9,11 @@ export interface InputProps {
     errors: FieldErrors;
     // eslint-disable-next-line no-unused-vars
     validate?: (val: string) => string | undefined;
-    control: Control;
+    control: Control<T, any>;
     defaultValue?: string;
 }
 
-const Input: React.FC<InputProps> = ({
+const Input: React.FC<InputProps<any>> = ({
     name,
     label,
     type = 'text',

@@ -1,17 +1,17 @@
 import React from 'react';
-import { Control, Controller, FieldErrors } from 'react-hook-form';
+import { Control, Controller, FieldErrors, FieldValues } from 'react-hook-form';
 
-export interface CheckboxProps {
+export interface CheckboxProps<T extends FieldValues> {
     name: string;
     label?: string;
     type?: string;
     required?: boolean;
     errors: FieldErrors;
-    control: Control;
+    control: Control<T, any>;
     defaultValue?: boolean;
 }
 
-const Checkbox: React.FC<CheckboxProps> = ({
+const Checkbox: React.FC<CheckboxProps<any>> = ({
     name,
     label,
     required = false,

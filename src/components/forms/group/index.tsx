@@ -90,9 +90,9 @@ const GroupForm: React.FC<GroupFormProps> = ({ initialGroup }) => {
         }
     };
 
-    const selectPermission = (permissionId: string): void => {
+    const selectPermission = (value: string): void => {
         const foundPermission: Permission | undefined = permissions.find(
-            (p: Permission) => p.id === parseInt(permissionId)
+            (p: Permission) => p.id === parseInt(value)
         );
         if (foundPermission) {
             setSelectedPermissions([...selectedPermissions, foundPermission]);
@@ -107,9 +107,11 @@ const GroupForm: React.FC<GroupFormProps> = ({ initialGroup }) => {
         }
     };
 
-    const removeSelectedPermission = (permissionId: number): void => {
+    const removeSelectedPermission = (permissionId: string): void => {
         setSelectedPermissions(
-            selectedPermissions.filter((p: Permission) => p.id !== permissionId)
+            selectedPermissions.filter(
+                (p: Permission) => p.id.toString() !== permissionId
+            )
         );
     };
 
@@ -169,12 +171,12 @@ const GroupForm: React.FC<GroupFormProps> = ({ initialGroup }) => {
                                         ) === -1
                                 )
                                 .map((p: Permission) => ({
-                                    value: p.id,
+                                    value: p.id.toString(),
                                     label: p.name,
                                 }))}
                             selectedOptions={selectedPermissions.map(
                                 (p: Permission) => ({
-                                    value: p.id,
+                                    value: p.id.toString(),
                                     label: p.name,
                                 })
                             )}

@@ -9,10 +9,12 @@ export interface InputProps<T extends FieldValues> {
     errors: FieldErrors;
     // eslint-disable-next-line no-unused-vars
     validate?: (val: string) => string | undefined;
+    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
     control: Control<T, any>;
     defaultValue?: string;
 }
 
+// eslint-disable-next-line  @typescript-eslint/no-explicit-any
 const Input: React.FC<InputProps<any>> = ({
     name,
     label,

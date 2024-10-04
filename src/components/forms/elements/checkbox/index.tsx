@@ -7,10 +7,12 @@ export interface CheckboxProps<T extends FieldValues> {
     type?: string;
     required?: boolean;
     errors: FieldErrors;
+    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
     control: Control<T, any>;
     defaultValue?: boolean;
 }
 
+// eslint-disable-next-line  @typescript-eslint/no-explicit-any
 const Checkbox: React.FC<CheckboxProps<any>> = ({
     name,
     label,

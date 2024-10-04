@@ -13,6 +13,7 @@ export type ButtonProps = {
     busy?: boolean;
     icon?: React.ReactNode;
     size?: 'sm' | 'lg';
+    testId?: string;
 };
 
 const Button: React.FC<ButtonProps> = ({
@@ -27,6 +28,7 @@ const Button: React.FC<ButtonProps> = ({
     busy,
     icon,
     size,
+    testId,
 }) => {
     let computedClassName = `button ${color || 'secondary'}`;
     if (className) {
@@ -42,7 +44,7 @@ const Button: React.FC<ButtonProps> = ({
             id={id}
             type={type || 'button'}
             disabled={disabled || busy || false}
-            data-testid="button"
+            data-testid={testId || 'button'}
         >
             <div className="flex justify-center">
                 {busy && (

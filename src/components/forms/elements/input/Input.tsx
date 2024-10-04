@@ -12,6 +12,7 @@ export interface InputProps<T extends FieldValues> {
     // eslint-disable-next-line  @typescript-eslint/no-explicit-any
     control: Control<T, any>;
     defaultValue?: string;
+    testId?: string;
 }
 
 // eslint-disable-next-line  @typescript-eslint/no-explicit-any
@@ -24,6 +25,7 @@ const Input: React.FC<InputProps<any>> = ({
     validate,
     control,
     defaultValue,
+    testId,
 }) => {
     const getError = (): string => {
         const defaultMessage = 'Please check your input.';
@@ -60,7 +62,7 @@ const Input: React.FC<InputProps<any>> = ({
                         onBlur={onBlur}
                         onChange={onChange}
                         value={value}
-                        data-testid="input"
+                        data-testid={testId || 'input'}
                     />
                     {errors && errors[name] && (
                         <span className="input-error" data-testid="input-error">

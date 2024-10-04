@@ -71,6 +71,7 @@ const LoginForm: React.FC = () => {
                         errors={errors}
                         control={control}
                         required={true}
+                        testId="email-input"
                     />
                     <Input
                         name="password"
@@ -79,6 +80,7 @@ const LoginForm: React.FC = () => {
                         errors={errors}
                         control={control}
                         required={true}
+                        testId="password-input"
                     />
                     <Alert severity="error" message={errorMessage} />
                     <div className="text-end flex flex-col justify-end">
@@ -88,6 +90,7 @@ const LoginForm: React.FC = () => {
                             color="primary"
                             className="my-5"
                             busy={isLoggingIn}
+                            testId="login-button"
                         />
                         <Link to="/register">New User? Register here.</Link>
                     </div>

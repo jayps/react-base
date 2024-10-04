@@ -7,6 +7,7 @@ export class User {
     public lastName: string;
     public isStaff: boolean;
     public isSuperuser: boolean;
+    public isActive: boolean;
     public groups: Group[];
 
     public constructor(
@@ -16,6 +17,7 @@ export class User {
         lastName: string,
         isStaff: boolean,
         isSuperuser: boolean,
+        isActive: boolean,
         groups: Group[]
     ) {
         // name cannot be changed after this initial definition, which has to be either at it's declaration or in the constructor.
@@ -25,6 +27,7 @@ export class User {
         this.lastName = lastName;
         this.isStaff = isStaff;
         this.isSuperuser = isSuperuser;
+        this.isActive = isActive;
         this.groups = groups;
     }
 

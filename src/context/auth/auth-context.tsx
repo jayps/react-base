@@ -27,6 +27,7 @@ if (initialAccessToken) {
         userInfo.last_name,
         userInfo.is_staff,
         userInfo.is_superuser,
+        userInfo.is_active,
         userInfo.groups.map((g: any) => {
             return {
                 id: g.id,
@@ -81,6 +82,7 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
                     userInfo.last_name,
                     userInfo.is_staff,
                     userInfo.is_superuser,
+                    userInfo.is_active,
                     userInfo.groups.map((g: any) => {
                         return {
                             id: g.id,

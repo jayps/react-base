@@ -1,6 +1,8 @@
 import { getTokenFromStorage } from '../utils';
+import { PaginatedData } from '../models/response';
+import { User } from '../models/user';
 
-export const getAllUsers = async () => {
+export const getAllUsers = async (): Promise<User[]> => {
     const accessToken = getTokenFromStorage();
     const httpResponse = await fetch(
         `${process.env.REACT_APP_API_BASE_URL}/users/all/`,
@@ -24,7 +26,7 @@ export const getAllUsers = async () => {
     }
 };
 
-export const getUsers = async (page: number) => {
+export const getUsers = async (page: number): Promise<PaginatedData<User>> => {
     const accessToken = getTokenFromStorage();
     const httpResponse = await fetch(
         `${process.env.REACT_APP_API_BASE_URL}/users/?page=${page}`,
@@ -56,7 +58,7 @@ export const saveUser = async (
     isSuperuser: boolean,
     isActive: boolean,
     id?: string
-) => {
+): Promise<User> => {
     const accessToken = getTokenFromStorage();
     const url: string = id
         ? `${process.env.REACT_APP_API_BASE_URL}/users/${id}/`
@@ -87,10 +89,12 @@ export const saveUser = async (
         } else {
             throw new Error('An error occurred. Please try again.');
         }
+    } else {
+        return response.data;
     }
 };
 
-export const fetchUserById = async (id: string) => {
+export const fetchUserById = async (id: string): Promise<User> => {
     const accessToken = getTokenFromStorage();
     const httpResponse = await fetch(
         `${process.env.REACT_APP_API_BASE_URL}/users/${id}/`,

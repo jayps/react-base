@@ -7,7 +7,7 @@ export interface InputProps<T extends FieldValues> {
     type?: string;
     required?: boolean;
     errors: FieldErrors;
-    validate?: (val: string) => boolean;
+    validate?: (val: string) => string|undefined;
     control: Control<T, any>;
     defaultValue?: string;
 }

@@ -24,8 +24,6 @@ const RegisterForm: React.FC = () => {
         handleSubmit,
         watch,
         formState: {errors},
-        setError,
-        clearErrors,
         control
     } = useForm<RegisterFormInputs>();
 
@@ -79,13 +77,8 @@ const RegisterForm: React.FC = () => {
                            required={true}
                            validate={(val: string) => {
                                if (watch('password') !== val) {
-                                   setError('repeatPassword', {type: 'custom', message: 'Passwords do not match.'})
-                                   return false;
-                               } else {
-                                   clearErrors('repeatPassword');
-                                   return true;
-                               }
-                           }}
+                                   return 'Passwords do not match.';
+                           }}}
                     />
                     <Alert severity="error" message={errorMessage}/>
                     <div className="text-end flex flex-col justify-end">

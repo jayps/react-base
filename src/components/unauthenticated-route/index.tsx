@@ -1,12 +1,14 @@
-import {useAuth} from '../../context/auth/auth-context';
+import { useAuth } from '../../context/auth/auth-context';
 import React from 'react';
-import {Navigate} from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 export interface UnauthenticatedRouteProps {
     comp: any;
 }
 
-const UnauthenticatedRoute: React.FC<UnauthenticatedRouteProps> = ({comp}) => {
+const UnauthenticatedRoute: React.FC<UnauthenticatedRouteProps> = ({
+    comp,
+}) => {
     const authState = useAuth();
 
     if (!authState.accessToken) {
@@ -14,6 +16,6 @@ const UnauthenticatedRoute: React.FC<UnauthenticatedRouteProps> = ({comp}) => {
     }
 
     return <Navigate to="/dashboard" replace />;
-}
+};
 
 export default UnauthenticatedRoute;

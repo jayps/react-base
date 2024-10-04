@@ -1,6 +1,11 @@
-import React, {createContext, PropsWithChildren, useContext, useReducer} from 'react';
-import {jwtDecode} from "jwt-decode";
-import {User} from '../../models/user';
+import React, {
+    createContext,
+    PropsWithChildren,
+    useContext,
+    useReducer,
+} from 'react';
+import { jwtDecode } from 'jwt-decode';
+import { User } from '../../models/user';
 
 export interface AuthState {
     accessToken: string;
@@ -30,19 +35,19 @@ if (initialAccessToken) {
                     return {
                         id: p.id,
                         name: p.name,
-                        codename: p.codename
-                    }
-                })
-            }
-        }),
-    )
+                        codename: p.codename,
+                    };
+                }),
+            };
+        })
+    );
 }
 
 const initialState: AuthState = {
     accessToken: initialAccessToken || '',
     refreshToken: initialRefreshToken || '',
     user: initialUser,
-}
+};
 
 export interface AuthAction {
     type: AUTH_ACTION_TYPE;
@@ -50,8 +55,8 @@ export interface AuthAction {
 }
 
 const AuthContext = createContext(initialState);
-const AuthDispatchContext = React.createContext<React.Dispatch<AuthAction> | null>(null);
-
+const AuthDispatchContext =
+    React.createContext<React.Dispatch<AuthAction> | null>(null);
 
 export enum AUTH_ACTION_TYPE {
     SET_TOKEN = 'SET_TOKEN',
@@ -84,12 +89,12 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
                                 return {
                                     id: p.id,
                                     name: p.name,
-                                    codename: p.codename
-                                }
-                            })
-                        }
-                    }),
-                )
+                                    codename: p.codename,
+                                };
+                            }),
+                        };
+                    })
+                ),
             };
         case AUTH_ACTION_TYPE.SET_USER:
             return {
@@ -106,13 +111,10 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
         default:
             return state;
     }
-}
+};
 
-export const AuthProvider: React.FC<PropsWithChildren> = ({children}) => {
-    const [authState, dispatch] = useReducer(
-        authReducer,
-        initialState
-    );
+export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
+    const [authState, dispatch] = useReducer(authReducer, initialState);
 
     return (
         <AuthContext.Provider value={authState}>
@@ -120,17 +122,13 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({children}) => {
                 {children}
             </AuthDispatchContext.Provider>
         </AuthContext.Provider>
-    )
-}
+    );
+};
 
 export const useAuth = () => {
     return useContext(AuthContext);
-}
+};
 
 export const useAuthDispatch = () => {
     return useContext(AuthDispatchContext);
-}
-
-
-
-
+};

@@ -1,14 +1,17 @@
-import {getTokenFromStorage} from '../utils';
+import { getTokenFromStorage } from '../utils';
 
 export const getPermissions = async () => {
     const accessToken = getTokenFromStorage();
-    const httpResponse = await fetch(`${process.env.REACT_APP_API_BASE_URL}/users/permissions/`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${accessToken}`,
+    const httpResponse = await fetch(
+        `${process.env.REACT_APP_API_BASE_URL}/users/permissions/`,
+        {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${accessToken}`,
+            },
         }
-    });
+    );
     const response = await httpResponse.json();
     if (httpResponse.status !== 200) {
         if (response.data && response.data.detail) {
@@ -19,4 +22,4 @@ export const getPermissions = async () => {
     } else {
         return response.data;
     }
-}
+};

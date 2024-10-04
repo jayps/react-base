@@ -1,19 +1,21 @@
 import React from 'react';
 import PrivatePage from '../../components/containers/private-page';
-import GroupForm, {GroupInputs} from '../../components/forms/group';
-import {useParams} from 'react-router-dom';
-import {useAuth} from '../../context/auth/auth-context';
+import GroupForm, { GroupInputs } from '../../components/forms/group';
+import { useParams } from 'react-router-dom';
+import { useAuth } from '../../context/auth/auth-context';
 import Card from '../../components/card';
 import SimpleContentLoader from '../../components/loader/content-loader';
-import {fetchGroupById} from '../../services/groups';
+import { fetchGroupById } from '../../services/groups';
 import Alert from '../../components/alert';
 
 const ManageGroupPage: React.FC = () => {
-    let {id} = useParams();
+    const { id } = useParams();
     const authState = useAuth();
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState<string | undefined>(undefined);
-    const [initialGroup, setInitialGroup] = React.useState<GroupInputs | undefined>()
+    const [initialGroup, setInitialGroup] = React.useState<
+        GroupInputs | undefined
+    >();
 
     React.useEffect(() => {
         if (id) {
@@ -28,7 +30,7 @@ const ManageGroupPage: React.FC = () => {
                     });
                 } catch (err) {
                     if (err instanceof Error) {
-                        setError(err.message)
+                        setError(err.message);
                     } else {
                         setError('An error has occurred. Please try again.');
                     }
@@ -44,16 +46,14 @@ const ManageGroupPage: React.FC = () => {
             <Card>
                 <h2>Manage Group</h2>
                 <SimpleContentLoader loading={loading}>
-                    {
-                        (!id || (id && !loading)) && (
-                            <GroupForm initialGroup={initialGroup}/>
-                        )
-                    }
-                    <Alert severity="error" message={error}/>
+                    {(!id || (id && !loading)) && (
+                        <GroupForm initialGroup={initialGroup} />
+                    )}
+                    <Alert severity="error" message={error} />
                 </SimpleContentLoader>
             </Card>
         </PrivatePage>
-    )
-}
+    );
+};
 
 export default ManageGroupPage;

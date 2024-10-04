@@ -1,5 +1,5 @@
 import React from 'react';
-import {Control, Controller, FieldErrors, FieldValues} from 'react-hook-form';
+import { Control, Controller, FieldErrors, FieldValues } from 'react-hook-form';
 
 export interface InputProps<T extends FieldValues> {
     name: string;
@@ -7,37 +7,37 @@ export interface InputProps<T extends FieldValues> {
     type?: string;
     required?: boolean;
     errors: FieldErrors;
-    validate?: (val: string) => string|undefined;
+    validate?: (val: string) => string | undefined;
     control: Control<T, any>;
     defaultValue?: string;
 }
 
 const Input: React.FC<InputProps<any>> = ({
-                                              name,
-                                              label,
-                                              type = 'text',
-                                              required = false,
-                                              errors,
-                                              validate,
-                                              control,
-                                              defaultValue
-                                          }) => {
+    name,
+    label,
+    type = 'text',
+    required = false,
+    errors,
+    validate,
+    control,
+    defaultValue,
+}) => {
     const getError = () => {
-        const defaultMessage = 'Please check your input.'
+        const defaultMessage = 'Please check your input.';
         if (errors && errors[name]) {
             const errorType = errors[name]?.type as string;
             switch (errorType.toLowerCase()) {
                 case 'required':
                     return 'This field is required.';
                 case 'validate':
-                    return errors[name]?.message as string || defaultMessage;
+                    return (errors[name]?.message as string) || defaultMessage;
                 default:
                     return defaultMessage;
             }
         }
 
         return defaultMessage;
-    }
+    };
 
     return (
         <Controller
@@ -46,9 +46,9 @@ const Input: React.FC<InputProps<any>> = ({
             defaultValue={defaultValue}
             rules={{
                 required,
-                validate
+                validate,
             }}
-            render={({field: {onChange, onBlur, value}}) => (
+            render={({ field: { onChange, onBlur, value } }) => (
                 <div className="form-group" data-testid="input-container">
                     <label htmlFor={name}>{label}</label>
                     <input
@@ -59,13 +59,15 @@ const Input: React.FC<InputProps<any>> = ({
                         value={value}
                         data-testid="input"
                     />
-                    {
-                        errors && errors[name] && <span className="input-error" data-testid="input-error">{getError()}</span>
-                    }
+                    {errors && errors[name] && (
+                        <span className="input-error" data-testid="input-error">
+                            {getError()}
+                        </span>
+                    )}
                 </div>
             )}
         />
     );
-}
+};
 
 export default Input;

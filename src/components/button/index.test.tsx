@@ -1,11 +1,11 @@
-import {render, screen} from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import React from 'react';
 import Button from './index';
-import {MemoryRouter} from 'react-router-dom';
+import { MemoryRouter } from 'react-router-dom';
 
 describe('button', () => {
     it('should render a loader when busy', () => {
-        render(<Button busy={true}/>);
+        render(<Button busy={true} />);
         const loaderElement = screen.getByTestId('button-loader');
         expect(loaderElement).not.toBeNull();
     });
@@ -13,7 +13,7 @@ describe('button', () => {
     it('should have a link', () => {
         render(
             <MemoryRouter>
-                <Button link={`/groups/new`} text={"New Group"}/>
+                <Button link={`/groups/new`} text={'New Group'} />
             </MemoryRouter>
         );
         const linkElement = screen.getByTestId('button-link');
@@ -21,9 +21,7 @@ describe('button', () => {
     });
 
     it('should render a submit button without a handler or link', () => {
-        render(
-            <Button type="submit" text="Submit" />
-        );
+        render(<Button type="submit" text="Submit" />);
         const buttonElement = screen.getByTestId('button');
         expect(buttonElement).not.toHaveAttribute('href');
         expect(buttonElement).not.toHaveAttribute('onClick');
@@ -31,7 +29,12 @@ describe('button', () => {
 
     it('should render properties correctly', () => {
         render(
-            <Button color="primary" text="Submit" size="sm" className="custom-class"/>
+            <Button
+                color="primary"
+                text="Submit"
+                size="sm"
+                className="custom-class"
+            />
         );
         const buttonElement = screen.getByTestId('button');
         expect(buttonElement).toHaveClass('primary');

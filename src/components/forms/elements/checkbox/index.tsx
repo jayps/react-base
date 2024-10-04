@@ -1,5 +1,5 @@
 import React from 'react';
-import {Control, Controller, FieldErrors, FieldValues} from 'react-hook-form';
+import { Control, Controller, FieldErrors, FieldValues } from 'react-hook-form';
 
 export interface CheckboxProps<T extends FieldValues> {
     name: string;
@@ -12,13 +12,13 @@ export interface CheckboxProps<T extends FieldValues> {
 }
 
 const Checkbox: React.FC<CheckboxProps<any>> = ({
-                                                    name,
-                                                    label,
-                                                    required = false,
-                                                    errors,
-                                                    control,
-                                                    defaultValue = false
-                                                }) => {
+    name,
+    label,
+    required = false,
+    errors,
+    control,
+    defaultValue = false,
+}) => {
     return (
         <div className="form-group" data-testid="checkbox-container">
             <Controller
@@ -26,9 +26,9 @@ const Checkbox: React.FC<CheckboxProps<any>> = ({
                 control={control}
                 defaultValue={defaultValue}
                 rules={{
-                    required
+                    required,
                 }}
-                render={({field: {onChange, onBlur, value}}) => (
+                render={({ field: { onChange, onBlur, value } }) => (
                     <input
                         type="checkbox"
                         placeholder={label}
@@ -39,15 +39,19 @@ const Checkbox: React.FC<CheckboxProps<any>> = ({
                     />
                 )}
             />
-            <label htmlFor={name} className="ms-2">{label}</label>
-            {
-                errors && errors[name] &&
-                <span className="input-error block" data-testid="checkbox-error">
+            <label htmlFor={name} className="ms-2">
+                {label}
+            </label>
+            {errors && errors[name] && (
+                <span
+                    className="input-error block"
+                    data-testid="checkbox-error"
+                >
                     This field is required.
                 </span>
-            }
+            )}
         </div>
-    )
-}
+    );
+};
 
 export default Checkbox;

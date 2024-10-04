@@ -3,9 +3,9 @@ import React from 'react';
 export type AlertProps = {
     severity: 'success' | 'warning' | 'error' | 'info';
     message?: string;
-}
+};
 
-const Alert: React.FC<AlertProps> = ({severity, message}) => {
+const Alert: React.FC<AlertProps> = ({ severity, message }) => {
     if (!message) {
         return null;
     }
@@ -14,7 +14,7 @@ const Alert: React.FC<AlertProps> = ({severity, message}) => {
         <div className={`alert ${severity}`} data-testid="alert">
             {message}
         </div>
-    )
-}
+    );
+};
 
 export default Alert;

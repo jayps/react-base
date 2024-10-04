@@ -1,6 +1,6 @@
 import React from 'react';
 import PublicPage from '../../components/containers/public-page';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const HomePage: React.FC = () => {
     return (
@@ -10,16 +10,12 @@ const HomePage: React.FC = () => {
                     <Link to="/login">Login</Link>
                 </div>
                 <div className="flex flex-col justify-center items-center min-h-screen">
-                    <p>
-                        Right of login page.
-                    </p>
-                    <p>
-                        Put a background here, or some text.
-                    </p>
+                    <p>Right of login page.</p>
+                    <p>Put a background here, or some text.</p>
                 </div>
             </div>
         </PublicPage>
-    )
-}
+    );
+};
 
 export default HomePage;

@@ -1,4 +1,4 @@
-import {Group} from './group';
+import { Group } from './group';
 
 export class User {
     public id: string;
@@ -16,7 +16,7 @@ export class User {
         lastName: string,
         isStaff: boolean,
         isSuperuser: boolean,
-        groups: Group[],
+        groups: Group[]
     ) {
         // name cannot be changed after this initial definition, which has to be either at it's declaration or in the constructor.
         this.id = id;
@@ -30,7 +30,10 @@ export class User {
 
     public hasPermission(permission: string): boolean {
         const found = this.groups.find((g) => {
-            return g.permissions.find((p) => p.codename === permission) !== undefined
+            return (
+                g.permissions.find((p) => p.codename === permission) !==
+                undefined
+            );
         });
 
         return found !== undefined;

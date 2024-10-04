@@ -1,13 +1,13 @@
 import React from 'react';
-import {useForm} from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import Checkbox from '../checkbox';
-import {act, fireEvent, render, screen} from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import Input from './Input';
 import userEvent from '@testing-library/user-event';
 
 describe('Input', () => {
     it('should submit successfully', async () => {
-        const mockSubmit = jest.fn(({testInput}) => {
+        const mockSubmit = jest.fn(({ testInput }) => {
             // do nothing
         });
 
@@ -15,18 +15,25 @@ describe('Input', () => {
             const {
                 handleSubmit,
                 control,
-                formState: {errors}
+                formState: { errors },
             } = useForm<{ testInput: string }>();
 
             return (
                 <form onSubmit={handleSubmit(mockSubmit)}>
-                    <Input type="text" name="testInput" errors={errors} control={control}/>
-                    <button type="submit" data-testid="test-button">Submit</button>
+                    <Input
+                        type="text"
+                        name="testInput"
+                        errors={errors}
+                        control={control}
+                    />
+                    <button type="submit" data-testid="test-button">
+                        Submit
+                    </button>
                 </form>
-            )
-        }
+            );
+        };
 
-        render(<TestForm/>);
+        render(<TestForm />);
 
         // Check that container is there
         const inputContainerElement = screen.getByTestId('input-container');
@@ -47,11 +54,14 @@ describe('Input', () => {
             fireEvent.click(submitButtonElement);
         });
 
-        expect(mockSubmit).toHaveBeenCalledWith({'testInput': 'Testing Input'}, expect.anything());
+        expect(mockSubmit).toHaveBeenCalledWith(
+            { testInput: 'Testing Input' },
+            expect.anything()
+        );
     });
 
     it('should show an error when required', async () => {
-        const mockSubmit = jest.fn(({testInput}) => {
+        const mockSubmit = jest.fn(({ testInput }) => {
             // do nothing
         });
 
@@ -59,18 +69,26 @@ describe('Input', () => {
             const {
                 handleSubmit,
                 control,
-                formState: {errors}
+                formState: { errors },
             } = useForm<{ testInput: string }>();
 
             return (
                 <form onSubmit={handleSubmit(mockSubmit)}>
-                    <Input type="text" name="testInput" errors={errors} control={control} required={true}/>
-                    <button type="submit" data-testid="test-button">Submit</button>
+                    <Input
+                        type="text"
+                        name="testInput"
+                        errors={errors}
+                        control={control}
+                        required={true}
+                    />
+                    <button type="submit" data-testid="test-button">
+                        Submit
+                    </button>
                 </form>
-            )
-        }
+            );
+        };
 
-        render(<TestForm/>);
+        render(<TestForm />);
 
         // Check that container is there
         const inputContainerElement = screen.getByTestId('input-container');
@@ -89,7 +107,7 @@ describe('Input', () => {
     });
 
     it('should show a custom error from validation function', async () => {
-        const mockSubmit = jest.fn(({testInput}) => {
+        const mockSubmit = jest.fn(({ testInput }) => {
             // do nothing
         });
 
@@ -97,22 +115,31 @@ describe('Input', () => {
             const {
                 handleSubmit,
                 control,
-                formState: {errors},
+                formState: { errors },
             } = useForm<{ testInput: string }>();
 
             return (
                 <form onSubmit={handleSubmit(mockSubmit)}>
-                    <Input type="text" name="testInput" errors={errors} control={control} required={true} validate={(val: string) => {
-                        if (val !== 'testing') {
-                            return 'Validation failed.';
-                        }
-                    }}/>
-                    <button type="submit" data-testid="test-button">Submit</button>
+                    <Input
+                        type="text"
+                        name="testInput"
+                        errors={errors}
+                        control={control}
+                        required={true}
+                        validate={(val: string) => {
+                            if (val !== 'testing') {
+                                return 'Validation failed.';
+                            }
+                        }}
+                    />
+                    <button type="submit" data-testid="test-button">
+                        Submit
+                    </button>
                 </form>
-            )
-        }
+            );
+        };
 
-        render(<TestForm/>);
+        render(<TestForm />);
 
         // Update input value
         const inputElement = screen.getByTestId('input');

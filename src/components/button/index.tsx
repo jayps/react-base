@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export type ButtonProps = {
     text?: string;
@@ -16,18 +16,18 @@ export type ButtonProps = {
 };
 
 const Button: React.FC<ButtonProps> = ({
-                                           text,
-                                           type,
-                                           id,
-                                           onClick,
-                                           link,
-                                           color,
-                                           className,
-                                           disabled,
-                                           busy,
-                                           icon,
-                                           size
-                                       }) => {
+    text,
+    type,
+    id,
+    onClick,
+    link,
+    color,
+    className,
+    disabled,
+    busy,
+    icon,
+    size,
+}) => {
     let computedClassName = `button ${color || 'secondary'}`;
     if (className) {
         computedClassName += `${computedClassName} ${className}`;
@@ -45,27 +45,23 @@ const Button: React.FC<ButtonProps> = ({
             data-testid="button"
         >
             <div className="flex justify-center">
-                {
-                    busy && (
-                        <div className="loader" data-testid="button-loader"></div>
-                    )
-                }
-                {
-                    link ? (
-                        <Link to={link} data-testid="button-link">
-                            {icon}
-                            {text && <span>{text}</span>}
-                        </Link>
-                    ) : (
-                        <>
-                            {icon}
-                            {text && <span>{text}</span>}
-                        </>
-                    )
-                }
+                {busy && (
+                    <div className="loader" data-testid="button-loader"></div>
+                )}
+                {link ? (
+                    <Link to={link} data-testid="button-link">
+                        {icon}
+                        {text && <span>{text}</span>}
+                    </Link>
+                ) : (
+                    <>
+                        {icon}
+                        {text && <span>{text}</span>}
+                    </>
+                )}
             </div>
         </button>
-    )
-}
+    );
+};
 
 export default Button;

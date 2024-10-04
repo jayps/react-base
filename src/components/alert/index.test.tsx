@@ -9,10 +9,10 @@ describe('Alert component', () => {
         expect(alertElement).toBeNull();
     });
 
-    it ('should render with appropriate class when message is present', () => {
+    it('should render with appropriate class when message is present', () => {
         render(<Alert severity="warning" message="This is a test warning!" />);
         const alertElement = screen.getByTestId('alert');
         expect(alertElement).toHaveClass('alert warning');
         expect(alertElement.textContent).toBe('This is a test warning!');
-    })
+    });
 });

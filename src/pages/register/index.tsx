@@ -10,16 +10,12 @@ const RegisterPage: React.FC = () => {
                     <RegisterForm />
                 </div>
                 <div className="flex flex-col justify-center items-center min-h-screen bg-slate-500">
-                    <p>
-                        Right of register page.
-                    </p>
-                    <p>
-                        Put a background here, or some text.
-                    </p>
+                    <p>Right of register page.</p>
+                    <p>Put a background here, or some text.</p>
                 </div>
             </div>
         </PublicPage>
-    )
-}
+    );
+};
 
 export default RegisterPage;

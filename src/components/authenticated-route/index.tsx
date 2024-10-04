@@ -1,13 +1,16 @@
-import {useAuth} from '../../context/auth/auth-context';
+import { useAuth } from '../../context/auth/auth-context';
 import React from 'react';
-import {Navigate} from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 export interface AuthenticatedRouteProps {
     comp: any;
     requiredPermission?: string;
 }
 
-const AuthenticatedRoute: React.FC<AuthenticatedRouteProps> = ({comp, requiredPermission}) => {
+const AuthenticatedRoute: React.FC<AuthenticatedRouteProps> = ({
+    comp,
+    requiredPermission,
+}) => {
     const authState = useAuth();
 
     if (authState.accessToken) {
@@ -23,6 +26,6 @@ const AuthenticatedRoute: React.FC<AuthenticatedRouteProps> = ({comp, requiredPe
     }
 
     return <Navigate to="/login" replace />;
-}
+};
 
 export default AuthenticatedRoute;

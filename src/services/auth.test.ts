@@ -39,7 +39,7 @@ describe('Test authentication service', () => {
         );
     });
 
-    it('should return catchall message when unexpected conditions occur without any further detail', async () => {
+    it('should return default error', async () => {
         global.fetch = jest.fn(() =>
             Promise.resolve({
                 status: 500,

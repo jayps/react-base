@@ -1,6 +1,7 @@
 import { getTokenFromStorage } from '../utils';
+import { Permission } from '../models/permission';
 
-export const getPermissions = async () => {
+export const getPermissions = async (): Promise<Permission[]> => {
     const accessToken = getTokenFromStorage();
     const httpResponse = await fetch(
         `${process.env.REACT_APP_API_BASE_URL}/users/permissions/`,

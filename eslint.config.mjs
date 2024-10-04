@@ -8,7 +8,7 @@ import prettier from 'eslint-plugin-prettier';
 
 export default [
     {files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"]},
-    {languageOptions: {globals: {...globals.node, ...globals.browser}}},
+    {languageOptions: {globals: {...globals.node, ...globals.browser, ...globals.jest}}},
     pluginJs.configs.recommended,
     ...tseslint.configs.recommended,
     pluginReact.configs.flat.recommended,
@@ -27,7 +27,7 @@ export default [
             "no-shadow": "off",
             "@typescript-eslint/no-shadow": [ "error" ],
             "@typescript-eslint/explicit-function-return-type": [ "error", { "allowExpressions": true } ],
-            "max-len": [ "warn", { "code": 100, "ignoreComments": true, "ignoreUrls": true } ],
+            "max-len": [ "warn", { "code": 120, "ignoreComments": true, "ignoreUrls": true } ],
             "react-hooks/rules-of-hooks": "error",
             "react-hooks/exhaustive-deps": "warn",
             "import/prefer-default-export": "off",

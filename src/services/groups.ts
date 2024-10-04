@@ -1,6 +1,8 @@
 import { getTokenFromStorage } from '../utils';
+import { Group } from '../models/group';
+import { PaginatedData } from '../models/response';
 
-export const getGroups = async () => {
+export const getGroups = async (): Promise<PaginatedData<Group>> => {
     const accessToken = getTokenFromStorage();
 
     const httpResponse = await fetch(
@@ -30,7 +32,7 @@ export const saveGroup = async (
     userSet: string[],
     permissions: number[],
     id?: string
-) => {
+): Promise<Group> => {
     const accessToken = getTokenFromStorage();
     const url: string = id
         ? `${process.env.REACT_APP_API_BASE_URL}/users/groups/${id}/`
@@ -58,10 +60,12 @@ export const saveGroup = async (
         } else {
             throw new Error('An error occurred. Please try again.');
         }
+    } else {
+        return response.data;
     }
 };
 
-export const fetchGroupById = async (id: string) => {
+export const fetchGroupById = async (id: string): Promise<Group> => {
     const accessToken = getTokenFromStorage();
     const httpResponse = await fetch(
         `${process.env.REACT_APP_API_BASE_URL}/users/groups/${id}/`,

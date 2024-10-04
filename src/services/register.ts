@@ -1,10 +1,12 @@
+import { User } from '../models/user';
+
 export const registerUser = async (
     firstName: string,
     lastName: string,
     email: string,
     password: string,
     repeatPassword: string
-) => {
+): Promise<User> => {
     const httpResponse = await fetch(
         `${process.env.REACT_APP_API_BASE_URL}/auth/register/`,
         {
@@ -31,6 +33,6 @@ export const registerUser = async (
             );
         }
     } else {
-        return true;
+        return response.data;
     }
 };

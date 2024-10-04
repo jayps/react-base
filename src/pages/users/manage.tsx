@@ -7,7 +7,7 @@ import Card from '../../components/card';
 import SimpleContentLoader from '../../components/loader/content-loader';
 import { fetchUserById } from '../../services/users';
 import Alert from '../../components/alert';
-import {User} from '../../models/user';
+import { User } from '../../models/user';
 
 const ManageUserPage: React.FC = () => {
     const { id } = useParams();

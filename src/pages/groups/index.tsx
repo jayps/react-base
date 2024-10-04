@@ -30,8 +30,8 @@ const GroupsPage: React.FC = () => {
         setLoading(true);
         (async () => {
             try {
-                const groups = await getGroups();
-                setGroups(groups);
+                const groupsResponse = await getGroups();
+                setGroups(groupsResponse);
             } catch (err) {
                 if (err instanceof Error) {
                     setError(err.message);

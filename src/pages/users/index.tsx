@@ -47,12 +47,12 @@ const UsersPage: React.FC = () => {
         })();
     }, [authState.accessToken, page]);
 
-    const loadNext = () => {
+    const loadNext = (): void => {
         setLoading(true);
         setPage(page + 1);
     };
 
-    const loadPrevious = () => {
+    const loadPrevious = (): void => {
         setLoading(true);
         setPage(page - 1);
     };

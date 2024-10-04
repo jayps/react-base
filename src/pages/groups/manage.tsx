@@ -7,6 +7,8 @@ import Card from '../../components/card';
 import SimpleContentLoader from '../../components/loader/content-loader';
 import { fetchGroupById } from '../../services/groups';
 import Alert from '../../components/alert';
+import { Permission } from '../../models/permission';
+import { User } from '../../models/user';
 
 const ManageGroupPage: React.FC = () => {
     const { id } = useParams();
@@ -25,8 +27,10 @@ const ManageGroupPage: React.FC = () => {
                     const group = await fetchGroupById(id);
                     setInitialGroup({
                         name: group.name,
-                        permissions: group.permissions.map((p: any) => p.id),
-                        userSet: group.userSet.map((u: any) => u.id),
+                        permissions: group.permissions.map(
+                            (p: Permission) => p.id
+                        ),
+                        userSet: group.userSet?.map((u: User) => u.id) || [],
                     });
                 } catch (err) {
                     if (err instanceof Error) {

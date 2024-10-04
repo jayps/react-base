@@ -1,4 +1,6 @@
-export const login = async (email: string, password: string) => {
+import { Auth } from '../models/auth';
+
+export const login = async (email: string, password: string): Promise<Auth> => {
     const httpResponse = await fetch(
         `${process.env.REACT_APP_API_BASE_URL}/auth/login/`,
         {

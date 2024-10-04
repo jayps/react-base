@@ -4,9 +4,9 @@ import React, {
     useContext,
     useReducer,
 } from 'react';
-import { jwtDecode } from 'jwt-decode';
 import { User } from '../../models/user';
-import { JwtInfo } from '../../models/auth';
+import { Auth } from '../../models/auth';
+import { getUserFromAccessToken } from '../../utils';
 
 export interface AuthState {
     accessToken: string;
@@ -20,17 +20,7 @@ const initialRefreshToken = tokenData.refresh;
 let initialUser: User | undefined = undefined;
 
 if (initialAccessToken) {
-    const userInfo: JwtInfo = jwtDecode(initialAccessToken);
-    initialUser = new User(
-        userInfo.user_id,
-        userInfo.email,
-        userInfo.first_name,
-        userInfo.last_name,
-        userInfo.is_staff,
-        userInfo.is_superuser,
-        userInfo.is_active,
-        userInfo.groups
-    );
+    initialUser = getUserFromAccessToken(initialAccessToken);
 }
 
 const initialState: AuthState = {
@@ -41,7 +31,7 @@ const initialState: AuthState = {
 
 export interface AuthAction {
     type: AUTH_ACTION_TYPE;
-    payload: any; // TODO: Properly type this
+    payload?: Auth;
 }
 
 const AuthContext = createContext(initialState);
@@ -49,8 +39,11 @@ const AuthDispatchContext =
     React.createContext<React.Dispatch<AuthAction> | null>(null);
 
 export enum AUTH_ACTION_TYPE {
+    // eslint-disable-next-line no-unused-vars
     SET_TOKEN = 'SET_TOKEN',
+    // eslint-disable-next-line no-unused-vars
     SET_USER = 'SET_USER',
+    // eslint-disable-next-line no-unused-vars
     LOGOUT = 'LOGOUT',
 }
 
@@ -58,39 +51,11 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
     switch (action.type) {
         case AUTH_ACTION_TYPE.SET_TOKEN:
             // Get user info from token
-            const userInfo: any = jwtDecode(action.payload.access);
-
             return {
                 ...state,
-                accessToken: action.payload.access,
-                refreshToken: action.payload.refresh,
-                user: new User(
-                    userInfo.user_id,
-                    userInfo.email,
-                    userInfo.first_name,
-                    userInfo.last_name,
-                    userInfo.is_staff,
-                    userInfo.is_superuser,
-                    userInfo.is_active,
-                    userInfo.groups.map((g: any) => {
-                        return {
-                            id: g.id,
-                            name: g.name,
-                            permissions: g.permissions.map((p: any) => {
-                                return {
-                                    id: p.id,
-                                    name: p.name,
-                                    codename: p.codename,
-                                };
-                            }),
-                        };
-                    })
-                ),
-            };
-        case AUTH_ACTION_TYPE.SET_USER:
-            return {
-                ...state,
-                user: action.payload.user,
+                accessToken: (action.payload as Auth).access,
+                refreshToken: (action.payload as Auth).refresh,
+                user: getUserFromAccessToken((action.payload as Auth).access),
             };
         case AUTH_ACTION_TYPE.LOGOUT:
             return {
@@ -116,10 +81,10 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
     );
 };
 
-export const useAuth = () => {
+export const useAuth = (): AuthState => {
     return useContext(AuthContext);
 };
 
-export const useAuthDispatch = () => {
+export const useAuthDispatch = (): React.Dispatch<AuthAction> | null => {
     return useContext(AuthDispatchContext);
 };

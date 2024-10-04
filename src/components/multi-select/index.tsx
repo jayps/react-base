@@ -6,13 +6,15 @@ export interface MultiSelectOption {
 }
 
 export interface MultiSelectProps {
-    onSelect: (value: any) => void;
+    // eslint-disable-next-line no-unused-vars
+    onSelect: (value: string | number) => void;
     heading: string;
     prompt: string;
     selectedText: string;
     options: MultiSelectOption[];
     selectedOptions: MultiSelectOption[];
-    onRemove: (value: any) => void;
+    // eslint-disable-next-line no-unused-vars
+    onRemove: (value: string | number) => void;
     id: string;
 }
 
@@ -32,7 +34,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
             <div className="flex flex-col min-h-48 overflow-y-scroll border p-2 mb-1">
                 <div className="form-group">
                     <select
-                        onChange={onSelect}
+                        onChange={(e) => onSelect(e.target.value)}
                         id="permissions-selector"
                         className="form-select"
                     >
@@ -53,7 +55,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
                         <span>{p.label}</span>
                         <span
                             onClick={() => onRemove(p.value)}
-                            className="hover:cursor-pointer border border-gray-200 hover:bg-gray-300 bg-gray-200 px-1 roounded"
+                            className="multi-select-option"
                         >
                             &times;
                         </span>

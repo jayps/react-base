@@ -222,3 +222,11 @@ table {
     }
   }
 }
+
+.multi-select-option {
+  @apply hover:cursor-pointer border border-gray-200 hover:bg-gray-300 bg-gray-200 px-1 rounded;
+}
+
+.private-page-container {
+  @apply container p-5 min-w-full bg-slate-200 min-h-screen grid grid-cols-1 md:grid-cols-8 lg:grid-cols-10 gap-5;
+}

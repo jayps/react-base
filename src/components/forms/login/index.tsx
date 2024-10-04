@@ -38,12 +38,12 @@ const LoginForm: React.FC = () => {
 
         try {
             const response = await login(data.email, data.password);
-            // TODO: Properly type this. Ensure authDispatch is not null.
-            // @ts-ignore
-            authDispatch({
-                type: AUTH_ACTION_TYPE.SET_TOKEN,
-                payload: response,
-            });
+            if (authDispatch) {
+                authDispatch({
+                    type: AUTH_ACTION_TYPE.SET_TOKEN,
+                    payload: response,
+                });
+            }
             localStorage.setItem('token', JSON.stringify(response));
         } catch (err) {
             if (err instanceof Error) {

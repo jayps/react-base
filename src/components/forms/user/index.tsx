@@ -30,10 +30,8 @@ const UserForm: React.FC<UserFormProps> = ({ initialUser }) => {
 
     const {
         handleSubmit,
-        formState: { errors, isValid },
+        formState: { errors },
         control,
-        setError,
-        clearErrors,
     } = useForm<UserInputs>({
         defaultValues: initialUser,
     });

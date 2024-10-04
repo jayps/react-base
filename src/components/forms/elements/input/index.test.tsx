@@ -1,15 +1,12 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import Checkbox from '../checkbox';
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import Input from './Input';
 import userEvent from '@testing-library/user-event';
 
 describe('Input', () => {
     it('should submit successfully', async () => {
-        const mockSubmit = jest.fn(({ testInput }) => {
-            // do nothing
-        });
+        const mockSubmit = jest.fn(() => {});
 
         const TestForm: React.FC = () => {
             const {
@@ -61,9 +58,7 @@ describe('Input', () => {
     });
 
     it('should show an error when required', async () => {
-        const mockSubmit = jest.fn(({ testInput }) => {
-            // do nothing
-        });
+        const mockSubmit = jest.fn(() => {});
 
         const TestForm: React.FC = () => {
             const {
@@ -107,9 +102,7 @@ describe('Input', () => {
     });
 
     it('should show a custom error from validation function', async () => {
-        const mockSubmit = jest.fn(({ testInput }) => {
-            // do nothing
-        });
+        const mockSubmit = jest.fn(() => {});
 
         const TestForm: React.FC = () => {
             const {

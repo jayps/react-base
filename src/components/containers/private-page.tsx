@@ -4,7 +4,7 @@ import logo from '../../media/logo.svg';
 
 const PrivatePage: React.FC<PropsWithChildren> = ({ children }) => {
     return (
-        <div className="container p-5 min-w-full bg-slate-200 min-h-screen grid grid-cols-1 md:grid-cols-8 lg:grid-cols-10 gap-5">
+        <div className="private-page-container">
             <div className="col-span-1 md:col-span-2 lg:col-span-2 min-h-full card">
                 <img src={logo} alt="logo" className="mb-5 h-6" />
                 <MainMenu />

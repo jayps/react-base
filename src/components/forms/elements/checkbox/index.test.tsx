@@ -1,20 +1,11 @@
 import { useForm } from 'react-hook-form';
-import {
-    act,
-    fireEvent,
-    render,
-    renderHook,
-    screen,
-    waitFor,
-} from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import Checkbox from './index';
 import React from 'react';
 
 describe('Checkbox', () => {
     it('should submit successfully', async () => {
-        const mockSubmit = jest.fn(({ testCheckbox }) => {
-            // do nothing
-        });
+        const mockSubmit = jest.fn(() => {});
 
         const TestForm: React.FC = () => {
             const {
@@ -66,9 +57,7 @@ describe('Checkbox', () => {
     });
 
     it('should show error when required and unchecked', async () => {
-        const mockSubmit = jest.fn(({ testCheckbox }) => {
-            // Do nothing
-        });
+        const mockSubmit = jest.fn(() => {});
 
         const TestForm: React.FC = () => {
             const {

@@ -3,7 +3,7 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 
 export interface AuthenticatedRouteProps {
-    comp: any;
+    comp: React.ReactNode;
     requiredPermission?: string;
 }
 
@@ -16,13 +16,13 @@ const AuthenticatedRoute: React.FC<AuthenticatedRouteProps> = ({
     if (authState.accessToken) {
         if (requiredPermission) {
             if (authState.user?.hasPermission(requiredPermission)) {
-                return comp;
+                return <>{comp}</>;
             } else {
                 return <Navigate to="/login" replace />;
             }
         }
 
-        return comp;
+        return <>{comp}</>;
     }
 
     return <Navigate to="/login" replace />;

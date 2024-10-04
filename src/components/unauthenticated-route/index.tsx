@@ -3,7 +3,7 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 
 export interface UnauthenticatedRouteProps {
-    comp: any;
+    comp: React.ReactNode;
 }
 
 const UnauthenticatedRoute: React.FC<UnauthenticatedRouteProps> = ({
@@ -12,7 +12,7 @@ const UnauthenticatedRoute: React.FC<UnauthenticatedRouteProps> = ({
     const authState = useAuth();
 
     if (!authState.accessToken) {
-        return comp;
+        return <>{comp}</>;
     }
 
     return <Navigate to="/dashboard" replace />;

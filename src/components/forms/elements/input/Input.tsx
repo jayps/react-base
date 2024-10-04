@@ -1,18 +1,19 @@
 import React from 'react';
-import { Control, Controller, FieldErrors, FieldValues } from 'react-hook-form';
+import { Control, Controller, FieldErrors } from 'react-hook-form';
 
-export interface InputProps<T extends FieldValues> {
+export interface InputProps {
     name: string;
     label?: string;
     type?: string;
     required?: boolean;
     errors: FieldErrors;
+    // eslint-disable-next-line no-unused-vars
     validate?: (val: string) => string | undefined;
-    control: Control<T, any>;
+    control: Control;
     defaultValue?: string;
 }
 
-const Input: React.FC<InputProps<any>> = ({
+const Input: React.FC<InputProps> = ({
     name,
     label,
     type = 'text',
@@ -22,7 +23,7 @@ const Input: React.FC<InputProps<any>> = ({
     control,
     defaultValue,
 }) => {
-    const getError = () => {
+    const getError = (): string => {
         const defaultMessage = 'Please check your input.';
         if (errors && errors[name]) {
             const errorType = errors[name]?.type as string;

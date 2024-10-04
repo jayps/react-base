@@ -43,7 +43,7 @@ const GroupForm: React.FC<GroupFormProps> = ({ initialGroup }) => {
         defaultValues: initialGroup,
     });
 
-    const loadData = async () => {
+    const loadData = async (): Promise<void> => {
         setLoading(true);
         try {
             const fetchedPermissions = await getPermissions();
@@ -90,30 +90,30 @@ const GroupForm: React.FC<GroupFormProps> = ({ initialGroup }) => {
         }
     };
 
-    const selectPermission = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectPermission = (permissionId: string): void => {
         const foundPermission: Permission | undefined = permissions.find(
-            (p: Permission) => p.id === parseInt(e.target.value)
+            (p: Permission) => p.id === parseInt(permissionId)
         );
         if (foundPermission) {
             setSelectedPermissions([...selectedPermissions, foundPermission]);
         }
     };
-    const selectUser = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectUser = (userId: string): void => {
         const foundUser: User | undefined = users.find(
-            (u: User) => u.id === e.target.value
+            (u: User) => u.id === userId
         );
         if (foundUser) {
             setSelectedUsers([...selectedUsers, foundUser]);
         }
     };
 
-    const removeSelectedPermission = (permissionId: number) => {
+    const removeSelectedPermission = (permissionId: number): void => {
         setSelectedPermissions(
             selectedPermissions.filter((p: Permission) => p.id !== permissionId)
         );
     };
 
-    const removeSelectedUser = (userId: string) => {
+    const removeSelectedUser = (userId: string): void => {
         setSelectedUsers(selectedUsers.filter((u: User) => u.id !== userId));
     };
 

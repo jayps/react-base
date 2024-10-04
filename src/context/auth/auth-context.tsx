@@ -6,6 +6,7 @@ import React, {
 } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import { User } from '../../models/user';
+import { JwtInfo } from '../../models/auth';
 
 export interface AuthState {
     accessToken: string;
@@ -19,7 +20,7 @@ const initialRefreshToken = tokenData.refresh;
 let initialUser: User | undefined = undefined;
 
 if (initialAccessToken) {
-    const userInfo: any = jwtDecode(initialAccessToken);
+    const userInfo: JwtInfo = jwtDecode(initialAccessToken);
     initialUser = new User(
         userInfo.user_id,
         userInfo.email,
@@ -28,19 +29,7 @@ if (initialAccessToken) {
         userInfo.is_staff,
         userInfo.is_superuser,
         userInfo.is_active,
-        userInfo.groups.map((g: any) => {
-            return {
-                id: g.id,
-                name: g.name,
-                permissions: g.permissions.map((p: any) => {
-                    return {
-                        id: p.id,
-                        name: p.name,
-                        codename: p.codename,
-                    };
-                }),
-            };
-        })
+        userInfo.groups
     );
 }
 

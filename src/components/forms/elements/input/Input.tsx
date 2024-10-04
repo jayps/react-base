@@ -29,10 +29,8 @@ const Input: React.FC<InputProps<any>> = ({
             switch (errorType.toLowerCase()) {
                 case 'required':
                     return 'This field is required.';
-                case 'custom':
-                    return errors[name]?.message as string || defaultMessage;
                 case 'validate':
-                    return '';
+                    return errors[name]?.message as string || defaultMessage;
                 default:
                     return defaultMessage;
             }
